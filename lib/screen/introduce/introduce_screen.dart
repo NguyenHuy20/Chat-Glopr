@@ -1,6 +1,7 @@
 import 'package:chat_glopr/@share/utils/utils.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/login/ui/login_page.dart';
+import 'package:chat_glopr/screen/register/ui/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -43,12 +44,13 @@ class IntroduceScreen extends StatelessWidget {
               height: 50,
             ),
             btnPrimaryDefaut(
-                onTap: () => goToScreen(context, const LoginPage()),
+                onTap: () => goToScreen(context, const RegisterPage()),
                 content: 'Register'),
             const SizedBox(
               height: 10,
             ),
             btnPrimaryDefaut(
+                onTap: () => goToScreen(context, const LoginPage()),
                 content: 'I have an account',
                 btnColor: Colors.transparent,
                 borderColor: Colors.white,

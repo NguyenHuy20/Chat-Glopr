@@ -12,6 +12,8 @@ import '../../@core/network/environment_config.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
+import '../values/styles.dart';
+
 Future goToScreen(BuildContext context, Widget screen,
     {int milliseconds = 100,
     String? routeName,
@@ -221,4 +223,22 @@ bool checkVersion(String localVersion, String storeVersion) {
       (slipLocalVersion[slipLocalVersion.length - 2]) ==
               slipStoreVersion[slipStoreVersion.length - 2] &&
           int.parse(slipLocalVersion.last) < int.parse(slipStoreVersion.last);
+}
+
+Widget loadMore(
+    ScrollController scrollController, Widget widget, bool isEndPage) {
+  return ListView(
+    padding: EdgeInsets.zero,
+    controller: scrollController,
+    physics: const AlwaysScrollableScrollPhysics(),
+    shrinkWrap: false,
+    children: [
+      widget,
+      isEndPage
+          ? Center(
+              child: Text("Đã xem hết danh sách",
+                  style: appStyle.copyWith(color: Colors.grey, fontSize: 12)))
+          : const SizedBox()
+    ],
+  );
 }

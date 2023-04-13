@@ -6,3 +6,11 @@ abstract class LoginEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class SubmitLoginEvent extends LoginEvent {
+  final LoginModel model;
+  final BuildContext context;
+  const SubmitLoginEvent({required this.model, required this.context});
+  @override
+  List<Object> get props => [];
+}

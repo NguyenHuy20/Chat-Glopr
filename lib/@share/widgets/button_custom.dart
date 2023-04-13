@@ -32,23 +32,33 @@ TouchableOpacity btnPink(
         {required String content,
         Color? contentColor,
         void Function()? onTap,
-        Color? borderColor}) =>
+        Color? borderColor,
+        IconData? icon}) =>
     TouchableOpacity(
       onTap: onTap,
       child: Container(
-        height: 52,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: const Color(0xFF9381FF),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: borderColor ?? Colors.transparent)),
-        child: Center(
-            child: Text(content,
-                style: appStyle.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: contentColor ?? Colors.black))),
-      ),
+          height: 52,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: const Color(0xFF9381FF),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: borderColor ?? Colors.transparent)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(content,
+                  style: appStyle.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: contentColor ?? Colors.black)),
+              icon != null
+                  ? Icon(
+                      icon,
+                      color: Colors.white,
+                    )
+                  : const SizedBox()
+            ],
+          )),
     );
 TouchableOpacity btnPrimaryHover({
   required String content,

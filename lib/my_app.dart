@@ -1,7 +1,13 @@
 import 'dart:io';
 
+import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
+import 'package:chat_glopr/screen/chat/view_model/chat_bloc.dart';
+import 'package:chat_glopr/screen/login/view_model/login_bloc.dart';
+import 'package:chat_glopr/screen/register/view_model/register_bloc.dart';
+import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
 import 'package:chat_glopr/screen/splash/ui/splash_page.dart';
 import 'package:chat_glopr/screen/splash/view_model/splash_bloc.dart';
+import 'package:chat_glopr/screen/verify_otp/view_model/verify_otp_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +59,7 @@ class MyApp extends StatelessWidget {
               child: child!,
             );
           },
-          home: const IntroduceScreen(),
+          home: const SplashPage(),
         ));
   }
 
@@ -73,6 +79,24 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => SplashBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider(
+          create: (context) => RegisterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => VerifyOTPBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ChatBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ProfileBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SettingBloc(),
         ),
       ],
       child: const MyApp(),

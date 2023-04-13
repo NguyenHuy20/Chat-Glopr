@@ -49,7 +49,7 @@ class _AuthServices implements AuthServices {
     final _data = userDict;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ResultLoginModel>(Options(
-      method: 'DELETE',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

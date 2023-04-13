@@ -12,6 +12,7 @@ TextFormField phoneFormFieldCustom(
         Widget? suffixIcon,
         String? hintText,
         String? errorText,
+        String? labelText,
         String? Function(String?)? validator,
         void Function(String)? onFieldSubmitted,
         void Function(String)? onChanged}) =>
@@ -21,39 +22,16 @@ TextFormField phoneFormFieldCustom(
       validator: validator,
       onChanged: onChanged,
       decoration: InputDecoration(
-          errorText: errorText,
-          prefixIcon: Container(
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                border: Border(
-                    right: BorderSide(
-              color: black,
-            ))),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4, left: 10, right: 15),
-              child: Text(
-                '+84',
-                style: appStyle.copyWith(fontSize: 15),
-              ),
-            ),
-          ),
+          labelText: labelText,
           filled: true, //<-- SEE HERE
-          fillColor: Colors.grey.shade50,
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: redDanger),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: redDanger, width: 1),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+          fillColor: Colors.transparent,
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: bluePrimary, width: 1),
-            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           hintText: hintText,
           hintStyle: appStyle.copyWith(color: Colors.grey)),
@@ -66,6 +44,7 @@ TextFormField textFormFieldCustom(
         bool fieldRequiredDanger = true,
         String? hintText,
         String? errorText,
+        String? labelText,
         String? Function(String?)? validator,
         void Function(String)? onFieldSubmitted,
         void Function(String)? onChanged}) =>
@@ -74,6 +53,7 @@ TextFormField textFormFieldCustom(
       keyboardType: TextInputType.text,
       validator: validator,
       decoration: InputDecoration(
+          labelText: labelText,
           filled: true, //<-- SEE HERE
           fillColor: Colors.transparent,
           enabledBorder: OutlineInputBorder(
@@ -94,6 +74,7 @@ TextFormField textFormFieldPasswordCustom(
         String? hintText,
         String? errorText,
         FocusNode? focusNode,
+        String? labelText,
         required bool obscureText,
         bool fieldRequiredDanger = true,
         String? Function(String?)? validator,
@@ -105,28 +86,18 @@ TextFormField textFormFieldPasswordCustom(
       keyboardType: TextInputType.text,
       validator: validator,
       decoration: InputDecoration(
+          labelText: labelText,
           filled: true, //<-- SEE HERE
-          errorText: errorText,
-          fillColor: Colors.grey.shade50,
+          fillColor: Colors.transparent,
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: redDanger, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: redDanger),
-            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: bluePrimary, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(20.0),
           ),
-          suffixIcon: suffixIcon,
           hintText: hintText,
-          labelStyle: appStyle.copyWith(color: gray.shade300),
           hintStyle: appStyle.copyWith(color: Colors.grey)),
     );
 TextFormField textFormFieldProfile(
@@ -220,4 +191,74 @@ TextFormField textFieldPhoneEmail(
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
+    );
+TextFormField textFieldChatCustom(
+        {TextEditingController? controller,
+        FocusNode? focusNode,
+        bool fieldRequiredDanger = true,
+        String? hintText,
+        void Function(String)? onFieldSubmitted,
+        void Function(String)? onChanged}) =>
+    TextFormField(
+      onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      focusNode: focusNode,
+      textDirection: TextDirection.ltr,
+      cursorColor: Colors.white,
+      style: appStyle.copyWith(color: Colors.white),
+      controller: controller,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          filled: true, //<-- SEE HERE
+          fillColor: pink,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: const BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
+          hintText: hintText,
+          hintStyle: appStyle.copyWith(color: Colors.white)),
+    );
+TextFormField textFieldChangeNameCustom(
+        {TextEditingController? controller,
+        FocusNode? focusNode,
+        bool fieldRequiredDanger = true,
+        String? hintText,
+        String? initValue,
+        void Function(String)? onFieldSubmitted,
+        void Function(String)? onChanged}) =>
+    TextFormField(
+      initialValue: initValue,
+      onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      focusNode: focusNode,
+      textDirection: TextDirection.ltr,
+      style: appStyle.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+      controller: controller,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          filled: true, //<-- SEE HERE
+          fillColor: Colors.white,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 5),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 5),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          // border: OutlineInputBorder(
+
+          //   borderRadius: BorderRadius.circular(20.0),
+          //   borderSide: const BorderSide(
+          //     width: 0,
+          //     style: BorderStyle.none,
+          //   ),
+          // ),
+          hintText: hintText,
+          hintStyle: appStyle.copyWith(color: Colors.white)),
     );

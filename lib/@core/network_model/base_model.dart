@@ -1,12 +1,12 @@
 class BaseModel {
   BaseModel({
-    required this.success,
+    this.success,
     required this.statusCode,
     required this.message,
     this.dynamicData,
   });
 
-  bool success;
+  bool? success;
   int statusCode;
   String message;
   dynamic dynamicData;

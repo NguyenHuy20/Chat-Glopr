@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
 import 'package:chat_glopr/@core/network/service/auth_service.dart';
+import 'package:chat_glopr/@core/network/service/conversation_service.dart';
+import 'package:chat_glopr/@core/network/service/user_service.dart';
 import 'package:dio/dio.dart';
 
 import '../storage/base.dart';
@@ -8,6 +11,8 @@ import 'environment_config.dart';
 class ApiClient {
   final dio = Dio();
   AuthServices? authServices;
+  UserServices? userServices;
+  ConversationServices? conversationServices;
   ApiClient() {
     _setUpDio();
     _setUpRetrofitService();
@@ -86,5 +91,8 @@ class ApiClient {
 
   _setUpRetrofitService() {
     authServices = AuthServices(dio, baseUrl: dio.options.baseUrl);
+    userServices = UserServices(dio, baseUrl: dio.options.baseUrl);
+    conversationServices =
+        ConversationServices(dio, baseUrl: dio.options.baseUrl);
   }
 }

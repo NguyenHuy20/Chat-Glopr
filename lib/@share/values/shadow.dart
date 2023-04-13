@@ -9,13 +9,11 @@ List<BoxShadow> shadow1 = [
   )
 ];
 
-List<BoxShadow> shadow2 = [
+List<BoxShadow> shadowTop = [
   BoxShadow(
-    color: Colors.grey.shade200,
-    spreadRadius: 0,
-    blurRadius: 8,
-    offset: const Offset(0, 4), // changes position of shadow
-  )
+      color: Colors.grey.shade200,
+      blurRadius: 15.0,
+      offset: const Offset(0.0, 0.75))
 ];
 
 List<BoxShadow> shadow3 = [

@@ -17,17 +17,17 @@ TextStyle get titlePageStyle => TextStyle(
     fontSize: 18);
 
 TextStyle get titleStyle => TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: "SVN-Poppins",
+    fontStyle: FontStyle.normal,
+    color: black,
+    fontSize: 36);
+TextStyle get heading1 => TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: "SVN-Poppins",
     fontStyle: FontStyle.normal,
     color: black,
-    fontSize: 15);
-TextStyle get heading1 => TextStyle(
-    fontWeight: FontWeight.w600,
-    fontFamily: "SVN-Poppins",
-    fontStyle: FontStyle.normal,
-    color: black,
-    fontSize: 30);
+    fontSize: 20);
 
 TextStyle get heading2 => TextStyle(
     fontWeight: FontWeight.w600,

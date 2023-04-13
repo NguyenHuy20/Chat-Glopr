@@ -92,3 +92,5 @@ MaterialColor greenSuccess = const MaterialColor(
     900: Color(0xFF072B19),
   },
 );
+Color green = const Color(0xff29B113);
+Color pink = const Color(0xFF9381FF);

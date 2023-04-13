@@ -13,6 +13,6 @@ abstract class AuthServices {
   @POST('auth/register')
   Future<ResultRegisterModel> register(@Body() userDict);
 
-  @DELETE('auth/login')
+  @POST('auth/login')
   Future<ResultLoginModel> login(@Body() userDict);
 }

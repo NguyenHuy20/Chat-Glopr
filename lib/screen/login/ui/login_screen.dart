@@ -1,8 +1,14 @@
+import 'package:chat_glopr/@core/local_model/login_model.dart';
+import 'package:chat_glopr/@share/utils/utils.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/@share/widgets/button_custom.dart';
+import 'package:chat_glopr/screen/login/view_model/login_bloc.dart';
+import 'package:chat_glopr/screen/register/ui/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:touchable_opacity/touchable_opacity.dart';
 
 import '../../../@share/widgets/text_field_custom.dart';
 
@@ -14,6 +20,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController userNameController = TextEditingController(text: '');
+  TextEditingController passwordController = TextEditingController(text: '');
+  late LoginBloc loginBloc;
+  @override
+  void initState() {
+    super.initState();
+    loginBloc = BlocProvider.of<LoginBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,43 +45,57 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Text(
                 'Login',
-                style: appStyle.copyWith(
-                    fontWeight: FontWeight.w700, fontSize: 36),
+                style: titleStyle,
               ),
               const SizedBox(
                 height: 40,
               ),
-              textFormFieldCustom(hintText: 'Username'),
+              textFormFieldCustom(
+                  hintText: 'Username', controller: userNameController),
               const SizedBox(
                 height: 15,
               ),
-              textFormFieldCustom(hintText: 'Password'),
+              textFormFieldPasswordCustom(
+                  hintText: 'Password',
+                  controller: passwordController,
+                  obscureText: true),
               const SizedBox(
                 height: 40,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 100, right: 100.0),
                 child: btnPink(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    loginBloc.add(SubmitLoginEvent(
+                        model: LoginModel(
+                            identity: userNameController.text,
+                            password: passwordController.text),
+                        context: context));
+                  },
                   content: 'Sign in',
                   contentColor: Colors.white,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(40, 10, 40, 30),
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "Don't have an account?",
-                          style:
-                              appStyle.copyWith(fontWeight: FontWeight.w300)),
-                      TextSpan(
-                          text: " Register now",
-                          style: appStyle.copyWith(
-                              fontWeight: FontWeight.w300,
-                              color: const Color(0xFF3300FF),
-                              decoration: TextDecoration.underline)),
-                    ],
+                child: TouchableOpacity(
+                  onTap: () => goToScreen(context, const RegisterPage()),
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: "Don't have an account?",
+                            style:
+                                appStyle.copyWith(fontWeight: FontWeight.w300)),
+                        TextSpan(
+                            text: " Register now",
+                            style: appStyle.copyWith(
+                                fontWeight: FontWeight.w300,
+                                color: const Color(0xFF3300FF),
+                                decoration: TextDecoration.underline)),
+                      ],
+                    ),
                   ),
                 ),
               ),

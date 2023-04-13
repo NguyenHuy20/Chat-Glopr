@@ -17,6 +17,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       SplashInitialEvent event, Emitter<SplashState> emit) async {
     // PackageInfo packageInfo = await PackageInfo.fromPlatform();
     // await saveAppVersion(packageInfo.version);
-    // emit(const GeneralSettingsSuccessState());
+    emit(const GeneralSettingsSuccessState());
   }
 }
