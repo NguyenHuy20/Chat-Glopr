@@ -9,9 +9,9 @@ import 'package:touchable_opacity/touchable_opacity.dart';
 
 class WidgetSettingOption extends StatelessWidget {
   const WidgetSettingOption(
-      {super.key, required this.settingBloc, required this.fullName});
+      {super.key, required this.settingBloc, required this.profileBloc});
   final SettingBloc settingBloc;
-  final String fullName;
+  final ProfileBloc profileBloc;
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -24,7 +24,7 @@ class WidgetSettingOption extends StatelessWidget {
           iconOption: 'assets/icons/change_name.webp',
           onTap: () {
             settingBloc.add(ShowDialogChangeNameEvent(
-                fullName: fullName, context: context));
+                profileBloc: profileBloc, context: context));
           },
         ),
         option(
@@ -51,6 +51,10 @@ class WidgetSettingOption extends StatelessWidget {
           context,
           title: 'Sign Out',
           iconOption: 'assets/icons/sign_out.webp',
+          onTap: () {
+            settingBloc
+                .add(SignOutEvent(context: context, profileBloc: profileBloc));
+          },
         ),
         option(
           context,
@@ -72,7 +76,7 @@ class WidgetSettingOption extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width / 1.4,
+              width: MediaQuery.of(context).size.width / 1.3,
               padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
               decoration: const BoxDecoration(
                   color: Colors.white,

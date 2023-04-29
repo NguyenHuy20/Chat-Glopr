@@ -1,13 +1,14 @@
 import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
-import 'package:chat_glopr/@core/network_model/result_get_conversation_model.dart';
-import 'package:chat_glopr/screen/chat/ui/channel_detail/widget_dialog_join_channel.dart';
+import 'package:chat_glopr/@core/network_model/result_get_conversation_group_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../@core/dependence_injection.dart';
-import '../ui/channel_detail/widget_dialog_delete_conversation.dart';
+import '../../../@core/network_model/result_get_conversation_model.dart';
+import '../../channel_detail/ui/widget_dialog_delete_conversation.dart';
+import '../../channel_detail/ui/widget_dialog_join_channel.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -17,6 +18,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   bool endPage = false;
   int pageGroupIndex = 1;
   bool endPageGroup = false;
+  List<ConversationGroupData> modelGroup = [];
   List<ConversationData> model = [];
 
   ChatBloc() : super(ChatInitial()) {
@@ -48,7 +50,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _getConversationGroup(
       GetConversationGroupEvent event, Emitter<ChatState> emit) async {
     try {
-      var result = await conversationRepo.getConversation(event.type);
+      var result = await conversationRepo.getConversationGroup(event.type);
       if (result.success == true &&
           result.statusCode == 200 &&
           result.data != null) {
@@ -95,8 +97,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (endPageGroup == false) {
       try {
         pageGroupIndex++;
-        var result =
-            await conversationRepo.pagingConversation(event.type, pageIndex);
+        var result = await conversationRepo.pagingConversationGroup(
+            event.type, pageIndex);
         if (result.success == true &&
             result.statusCode == 200 &&
             result.data != null) {
@@ -106,10 +108,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             return;
           }
           result.data?.forEach((element) {
-            model.add(element);
+            modelGroup.add(element);
           });
 
-          emit(PagingConversationGroupSuccessState(data: model));
+          emit(PagingConversationGroupSuccessState(data: modelGroup));
           return;
         }
         emit(PagingConversationGroupFailState());

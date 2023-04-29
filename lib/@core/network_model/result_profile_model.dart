@@ -50,7 +50,7 @@ class ProfileData {
       this.updatedAt});
 
   ProfileData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['_id'];
     email = json['email'];
     phoneNumber = json['phoneNumber'];
     fullName = json['fullName'];
@@ -66,7 +66,7 @@ class ProfileData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
+    data['_id'] = id;
     data['email'] = email;
     data['phoneNumber'] = phoneNumber;
     data['fullName'] = fullName;

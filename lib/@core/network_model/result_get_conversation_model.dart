@@ -27,7 +27,11 @@ class ResultGetConversationModel extends BaseModel {
 class ConversationData {
   String? id;
   String? name;
-  List<ImageAvatar>? image;
+  String? avatar;
+  String? userId;
+  String? friendStatus;
+  bool? isOnline;
+  String? lastLogin;
   bool? type;
   int? totalMembers;
   int? numberUnread;
@@ -38,7 +42,11 @@ class ConversationData {
   ConversationData(
       {this.id,
       this.name,
-      this.image,
+      this.avatar,
+      this.userId,
+      this.friendStatus,
+      this.isOnline,
+      this.lastLogin,
       this.type,
       this.totalMembers,
       this.numberUnread,
@@ -49,12 +57,11 @@ class ConversationData {
   ConversationData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     name = json['name'];
-    if (json['image'] != null) {
-      image = <ImageAvatar>[];
-      json['image'].forEach((v) {
-        image!.add(ImageAvatar.fromJson(v));
-      });
-    }
+    avatar = json['avatar'];
+    userId = json['userId'];
+    friendStatus = json['friendStatus'];
+    isOnline = json['isOnline'];
+    lastLogin = json['lastLogin'];
     type = json['type'];
     totalMembers = json['totalMembers'];
     numberUnread = json['numberUnread'];
@@ -69,9 +76,11 @@ class ConversationData {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = id;
     data['name'] = name;
-    if (image != null) {
-      data['image'] = image!.map((v) => v.toJson()).toList();
-    }
+    data['avatar'] = avatar;
+    data['userId'] = userId;
+    data['friendStatus'] = friendStatus;
+    data['isOnline'] = isOnline;
+    data['lastLogin'] = lastLogin;
     data['type'] = type;
     data['totalMembers'] = totalMembers;
     data['numberUnread'] = numberUnread;
@@ -84,122 +93,92 @@ class ConversationData {
   }
 }
 
-class ImageAvatar {
-  String? avatar;
-
-  ImageAvatar({this.avatar});
-
-  ImageAvatar.fromJson(Map<String, dynamic> json) {
-    avatar = json['avatar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['avatar'] = avatar;
-    return data;
-  }
-}
-
 class LastMessage {
-  String? id;
+  String? sId;
   String? content;
   String? type;
   String? conversationId;
-
   String? createdAt;
-  User? user;
-  List<ManipulatedUsers>? manipulatedUsers;
   dynamic replyMessage;
+  List<Participants>? participants;
+  User? user;
 
   LastMessage({
-    this.id,
+    this.sId,
     this.content,
     this.type,
     this.conversationId,
     this.createdAt,
-    this.user,
-    this.manipulatedUsers,
     this.replyMessage,
+    this.participants,
+    this.user,
   });
 
   LastMessage.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    sId = json['_id'];
     content = json['content'];
     type = json['type'];
     conversationId = json['conversationId'];
     createdAt = json['createdAt'];
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
-    if (json['manipulatedUsers'] != null) {
-      manipulatedUsers = <ManipulatedUsers>[];
-      json['manipulatedUsers'].forEach((v) {
-        manipulatedUsers!.add(ManipulatedUsers.fromJson(v));
+    replyMessage = json['replyMessage'];
+    if (json['participants'] != null) {
+      participants = <Participants>[];
+      json['participants'].forEach((v) {
+        participants!.add(Participants.fromJson(v));
       });
     }
-
-    replyMessage = json['replyMessage'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['_id'] = sId;
     data['content'] = content;
     data['type'] = type;
     data['conversationId'] = conversationId;
-
     data['createdAt'] = createdAt;
+    data['replyMessage'] = replyMessage;
+    if (participants != null) {
+      data['participants'] = participants!.map((v) => v.toJson()).toList();
+    }
     if (user != null) {
       data['user'] = user!.toJson();
     }
-    if (manipulatedUsers != null) {
-      data['manipulatedUsers'] =
-          manipulatedUsers!.map((v) => v.toJson()).toList();
-    }
 
-    data['replyMessage'] = replyMessage;
+    return data;
+  }
+}
 
+class Participants {
+  String? userId;
+
+  Participants({this.userId});
+
+  Participants.fromJson(Map<String, dynamic> json) {
+    userId = json['userId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['userId'] = userId;
     return data;
   }
 }
 
 class User {
   String? id;
-  String? fullName;
   String? avatar;
 
-  User({this.id, this.fullName, this.avatar});
+  User({this.id, this.avatar});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
-    fullName = json['fullName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = id;
-    data['fullName'] = fullName;
-    data['avatar'] = avatar;
-    return data;
-  }
-}
-
-class ManipulatedUsers {
-  String? id;
-  String? fullName;
-  String? avatar;
-
-  ManipulatedUsers({this.id, this.fullName, this.avatar});
-
-  ManipulatedUsers.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    fullName = json['fullName'];
-    avatar = json['avatar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
-    data['fullName'] = fullName;
     data['avatar'] = avatar;
     return data;
   }

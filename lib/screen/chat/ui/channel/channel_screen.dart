@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:chat_glopr/@share/values/shadow.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
@@ -10,12 +11,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
-import '../../../../@core/network_model/result_get_conversation_model.dart';
-import '../../../../@share/utils/utils.dart';
-import '../../../../@share/widgets/marquee_text.dart';
-import '../../../../@share/widgets/widget_skeleton_loading.dart';
+import '../../../../../../@core/network_model/result_get_conversation_group_model.dart';
+import '../../../../../../@share/utils/utils.dart';
+import '../../../../../../@share/widgets/widget_skeleton_loading.dart';
+import '../../../channel_detail/ui/channel_detail_page.dart';
+import '../../../channel_detail/ui/channel_detail_screen.dart';
 import '../../view_model/chat_bloc.dart';
-import '../channel_detail/channel_detail_screen.dart';
 
 class ChannelScreen extends StatefulWidget {
   const ChannelScreen({super.key});
@@ -27,7 +28,7 @@ class ChannelScreen extends StatefulWidget {
 class _ChannelScreenState extends State<ChannelScreen>
     with AutomaticKeepAliveClientMixin<ChannelScreen> {
   late ChatBloc chatBloc;
-  late StreamController<List<ConversationData>> conversationController;
+  late StreamController<List<ConversationGroupData>> conversationController;
   final ScrollController _scrollController = ScrollController();
   bool endPage = false;
 
@@ -35,7 +36,7 @@ class _ChannelScreenState extends State<ChannelScreen>
   void initState() {
     chatBloc = BlocProvider.of<ChatBloc>(context);
     chatBloc.add(const GetConversationGroupEvent(type: 2));
-    conversationController = StreamController<List<ConversationData>>();
+    conversationController = StreamController<List<ConversationGroupData>>();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -91,11 +92,8 @@ class _ChannelScreenState extends State<ChannelScreen>
                   )
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Expanded(
-                child: StreamBuilder<List<ConversationData>>(
+                child: StreamBuilder<List<ConversationGroupData>>(
                     stream: conversationController.stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -104,7 +102,7 @@ class _ChannelScreenState extends State<ChannelScreen>
                                 _scrollController,
                                 ListView(
                                     padding: const EdgeInsets.only(
-                                        top: 15, bottom: 10),
+                                        top: 5, bottom: 10),
                                     physics: const ClampingScrollPhysics(),
                                     shrinkWrap: true,
                                     children: snapshot.data!.map((element) {
@@ -130,7 +128,7 @@ class _ChannelScreenState extends State<ChannelScreen>
     );
   }
 
-  Widget chatGroupBox(ConversationData data) => Slidable(
+  Widget chatGroupBox(ConversationGroupData data) => Slidable(
         key: const ValueKey(0),
         enabled: true,
         closeOnScroll: true,
@@ -152,7 +150,7 @@ class _ChannelScreenState extends State<ChannelScreen>
           onTap: () {
             goToScreen(
                 context,
-                ChannelDetailScreen(
+                ChannelDetailPage(
                   data: data,
                 ));
           },

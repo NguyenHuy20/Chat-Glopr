@@ -8,8 +8,11 @@ import '../../../@share/values/styles.dart';
 import '../../../@share/widgets/text_field_custom.dart';
 
 class WidgetDialogChangeName extends StatelessWidget {
-  const WidgetDialogChangeName({super.key, required this.fullName});
-  final String fullName;
+  const WidgetDialogChangeName(
+      {super.key, required this.nameController, required this.onTap});
+  final TextEditingController nameController;
+  final Function(String) onTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,21 +40,26 @@ class WidgetDialogChangeName extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          textFieldChangeNameCustom(initValue: fullName),
+          textFieldChangeNameCustom(controller: nameController),
           Expanded(
               child: Align(
             alignment: Alignment.bottomRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50), color: green),
-                  child: Text(
-                    'Yes',
-                    style:
-                        titleStyle.copyWith(fontSize: 16, color: Colors.white),
+                TouchableOpacity(
+                  onTap: () {
+                    onTap(nameController.text);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50), color: green),
+                    child: Text(
+                      'Yes',
+                      style: titleStyle.copyWith(
+                          fontSize: 16, color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(

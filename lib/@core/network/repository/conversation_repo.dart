@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 import '../../dependence_injection.dart';
 import '../../network_model/result_create_conversation_model.dart';
+import '../../network_model/result_get_conversation_group_model.dart';
 import '../../network_model/result_get_conversation_model.dart';
 import '../api_client.dart';
 
@@ -14,6 +15,26 @@ class ConversationRepo {
       return await apiClient.conversationServices!.getConversation(type);
     } on DioError catch (e) {
       final value = ResultGetConversationModel.fromJson(e.response!.data);
+      return value;
+    }
+  }
+
+  Future<ResultGetConversationGroupModel> getConversationGroup(int type) async {
+    try {
+      return await apiClient.conversationServices!.getConversationGroup(type);
+    } on DioError catch (e) {
+      final value = ResultGetConversationGroupModel.fromJson(e.response!.data);
+      return value;
+    }
+  }
+
+  Future<ResultGetConversationGroupModel> pagingConversationGroup(
+      int type, int page) async {
+    try {
+      return await apiClient.conversationServices!
+          .pagingConversationGroup(type, page);
+    } on DioError catch (e) {
+      final value = ResultGetConversationGroupModel.fromJson(e.response!.data);
       return value;
     }
   }

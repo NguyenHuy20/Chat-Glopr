@@ -38,6 +38,7 @@ TextFormField phoneFormFieldCustom(
     );
 TextFormField textFormFieldCustom(
         {TextEditingController? controller,
+        bool readOnly = false,
         FocusNode? focusNode,
         Widget? icon,
         Widget? suffixIcon,
@@ -46,13 +47,17 @@ TextFormField textFormFieldCustom(
         String? errorText,
         String? labelText,
         String? Function(String?)? validator,
+        void Function()? onTap,
         void Function(String)? onFieldSubmitted,
         void Function(String)? onChanged}) =>
     TextFormField(
+      onTap: onTap,
+      readOnly: readOnly,
       controller: controller,
       keyboardType: TextInputType.text,
       validator: validator,
       decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           labelText: labelText,
           filled: true, //<-- SEE HERE
           fillColor: Colors.transparent,
@@ -261,4 +266,36 @@ TextFormField textFieldChangeNameCustom(
           // ),
           hintText: hintText,
           hintStyle: appStyle.copyWith(color: Colors.white)),
+    );
+TextFormField textSearchFieldCustom(
+        {TextEditingController? controller,
+        FocusNode? focusNode,
+        Widget? icon,
+        Widget? prefixIcon,
+        bool fieldRequiredDanger = true,
+        String? hintText,
+        String? errorText,
+        String? labelText,
+        String? Function(String?)? validator,
+        void Function(String)? onFieldSubmitted,
+        void Function(String)? onChanged}) =>
+    TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.text,
+      validator: validator,
+      decoration: InputDecoration(
+          prefixIcon: prefixIcon,
+          labelText: labelText,
+          filled: true, //<-- SEE HERE
+          fillColor: Colors.transparent,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          hintText: hintText,
+          hintStyle: appStyle.copyWith(color: Colors.grey)),
     );

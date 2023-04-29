@@ -3,17 +3,17 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
-import '../../../../@share/values/colors.dart';
-import '../../../../@share/values/styles.dart';
-import '../../../../@share/widgets/text_field_custom.dart';
+import '../../../@share/values/colors.dart';
+import '../../../@share/values/styles.dart';
+import '../../../@share/widgets/text_field_custom.dart';
 
-class WidgetDialogJoinChannel extends StatelessWidget {
-  const WidgetDialogJoinChannel({super.key});
-
+class WidgetDialogSingOut extends StatelessWidget {
+  const WidgetDialogSingOut({super.key, required this.onTap});
+  final Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 210,
+      height: 200,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           image: const DecorationImage(
@@ -23,7 +23,7 @@ class WidgetDialogJoinChannel extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Join Channel',
+            'Sign out',
             style: titleStyle.copyWith(fontSize: 20),
           ),
           Padding(
@@ -37,21 +37,27 @@ class WidgetDialogJoinChannel extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          textFieldChangeNameCustom(),
+          Text(
+            'Are you sure want to sign out ?',
+            style: appStyle.copyWith(fontSize: 16),
+          ),
           Expanded(
               child: Align(
             alignment: Alignment.bottomRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50), color: green),
-                  child: Text(
-                    'Yes',
-                    style:
-                        titleStyle.copyWith(fontSize: 16, color: Colors.white),
+                TouchableOpacity(
+                  onTap: onTap,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50), color: green),
+                    child: Text(
+                      'Yes',
+                      style: titleStyle.copyWith(
+                          fontSize: 16, color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(

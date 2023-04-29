@@ -22,7 +22,7 @@ class GetConversationFailState extends ChatState {
 }
 
 class GetConversationGroupSuccessState extends ChatState {
-  final List<ConversationData> lstConservation;
+  final List<ConversationGroupData> lstConservation;
   const GetConversationGroupSuccessState({required this.lstConservation});
   @override
   List<Object> get props => [];
@@ -51,7 +51,7 @@ class LostPagingState extends ChatState {
 }
 
 class PagingConversationGroupSuccessState extends ChatState {
-  final List<ConversationData> data;
+  final List<ConversationGroupData> data;
   const PagingConversationGroupSuccessState({required this.data});
   @override
   List<Object> get props => [identityHashCode(this), data];

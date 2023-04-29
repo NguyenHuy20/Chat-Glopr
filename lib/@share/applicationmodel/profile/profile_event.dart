@@ -8,13 +8,16 @@ abstract class ProfileEvent extends Equatable {
 }
 
 class GetDataProfile extends ProfileEvent {
-  const GetDataProfile();
-
+  @override
   List<Object> get prop => [];
 }
 
 class SplashCheckProfile extends ProfileEvent {
-  const SplashCheckProfile();
+  @override
+  List<Object> get prop => [];
+}
 
+class ClearProfileEvent extends ProfileEvent {
+  @override
   List<Object> get prop => [];
 }

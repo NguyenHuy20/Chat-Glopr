@@ -2,7 +2,9 @@ import 'package:chat_glopr/@core/network_model/result_send_otp_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../network_model/result_detail_user_info.dart';
 import '../../network_model/result_profile_model.dart';
+import '../../network_model/result_update_user_info.dart';
 
 part 'user_service.g.dart';
 
@@ -15,4 +17,10 @@ abstract class UserServices {
 
   @GET('users/me')
   Future<ResultProfileModel> fetchProfile();
+
+  @PATCH('users/me')
+  Future<ResultUpdateUserInfoModel> updateUserInfo(@Body() useDict);
+
+  @GET('users/detail/{key}')
+  Future<ResultDetailUserInfoModel> getDetailUserInfo(@Path('key') String key);
 }

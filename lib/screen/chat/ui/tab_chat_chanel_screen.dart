@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
-import 'package:chat_glopr/@share/values/shadow.dart';
+import 'package:chat_glopr/@share/utils/utils.dart';
+import 'package:chat_glopr/screen/search/ui/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:badges/src/badge.dart' as badge;
 
+import '../../../@core/network_model/result_profile_model.dart';
 import '../../../@share/applicationmodel/profile/profile_bloc.dart';
 import '../../../@share/values/colors.dart';
 import '../../../@share/values/styles.dart';
@@ -21,11 +23,12 @@ class _TabChatChannelScreenState extends State<TabChatChannelScreen>
     with SingleTickerProviderStateMixin {
   late ProfileBloc profileBloc;
   late TabController _tabController;
+  ProfileData? profileData;
   int indexTabar = 0;
   @override
   void initState() {
     profileBloc = BlocProvider.of<ProfileBloc>(context);
-    profileBloc.add(const GetDataProfile());
+    profileBloc.add(GetDataProfile());
     _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
 
     super.initState();
@@ -36,7 +39,11 @@ class _TabChatChannelScreenState extends State<TabChatChannelScreen>
     EdgeInsets paddingDevice = MediaQuery.of(context).padding;
     return BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
-          if (state is ProfileSuccessState) {}
+          if (state is ProfileSuccessState) {
+            setState(() {
+              profileData = state.data;
+            });
+          }
         },
         child: Scaffold(
             backgroundColor: Colors.white,
@@ -44,13 +51,13 @@ class _TabChatChannelScreenState extends State<TabChatChannelScreen>
               children: [
                 Padding(
                     padding:
-                        EdgeInsets.fromLTRB(30, paddingDevice.top + 10, 30, 0),
+                        EdgeInsets.fromLTRB(30, paddingDevice.top + 10, 15, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
-                            profileBloc.profileDataModel?.avatar != null
+                            profileData?.avatar != null
                                 ? badge.Badge(
                                     animationDuration:
                                         const Duration(milliseconds: 0),
@@ -102,15 +109,16 @@ class _TabChatChannelScreenState extends State<TabChatChannelScreen>
                               width: 10,
                             ),
                             Text(
-                              profileBloc.profileDataModel?.fullName ?? '',
+                              profileData?.fullName ?? '',
                               style: appStyle.copyWith(
                                   fontWeight: FontWeight.w700, fontSize: 20),
                             )
                           ],
                         ),
-                        const Icon(
-                          Icons.search,
-                          size: 25,
+                        IconButton(
+                          onPressed: () => goToScreen(context, SearchPage()),
+                          icon: const Icon(Icons.search),
+                          iconSize: 25,
                         ),
                       ],
                     )),

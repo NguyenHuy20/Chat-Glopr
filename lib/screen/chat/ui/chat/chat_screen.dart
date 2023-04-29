@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/chat/view_model/chat_bloc.dart';
@@ -11,9 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
+import '../../../../@core/network_model/result_get_conversation_group_model.dart';
 import '../../../../@core/network_model/result_get_conversation_model.dart';
 import '../../../../@share/utils/utils.dart';
 import '../../../../@share/widgets/widget_skeleton_loading.dart';
+import '../../../chat_detail/ui/chat_detail_page.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -33,7 +36,6 @@ class _ChatScreenState extends State<ChatScreen>
     chatBloc = BlocProvider.of<ChatBloc>(context);
     chatBloc.add(const GetConversationEvent(type: 1));
     conversationController = StreamController<List<ConversationData>>();
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -76,9 +78,6 @@ class _ChatScreenState extends State<ChatScreen>
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Column(children: [
-              const SizedBox(
-                height: 10,
-              ),
               Expanded(
                 child: StreamBuilder<List<ConversationData>>(
                     stream: conversationController.stream,
@@ -135,26 +134,31 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         child: TouchableOpacity(
           onTap: () {
-            // goToScreen(
-            //     context,
-            //     ChannelDetailScreen(
-            //       data: data,
-            //     ));
+            goToScreen(
+                context,
+                ChatDetailPage(
+                  data: data,
+                ));
           },
           child: Container(
             margin: const EdgeInsets.fromLTRB(5, 15, 5, 15),
             width: double.infinity,
             child: Row(
               children: [
-                Container(
-                  width: 53,
-                  height: 53,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/logo.webp'))),
-                ),
+                SizedBox(
+                    width: 53,
+                    height: 53,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(65.0),
+                      child: CachedNetworkImage(
+                        imageUrl: data.avatar ?? '',
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                const SizedBox(),
+                        errorWidget: (context, url, error) =>
+                            Image.asset('assets/images/logo.webp'),
+                      ),
+                    )),
                 const SizedBox(
                   width: 10,
                 ),

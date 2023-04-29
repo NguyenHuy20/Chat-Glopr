@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
@@ -17,7 +18,6 @@ void main() async {
   runZonedGuarded<Future<void>>(() async {
     initDependence();
     WidgetsFlutterBinding.ensureInitialized();
-
     // final GoogleMapsFlutterPlatform mapsImplementation =
     //   GoogleMapsFlutterPlatform.instance;
     // if (mapsImplementation is GoogleMapsFlutterAndroid) {
@@ -35,12 +35,7 @@ void main() async {
     await FkUserAgent.init();
     await EasyLocalization.ensureInitialized();
     var startLocale = await getLocale();
-    runApp(Phoenix(
-        child: EasyLocalization(
-            supportedLocales: const [Locale('vi', 'VN'), Locale('en', 'US')],
-            path: 'assets/langs',
-            startLocale: startLocale,
-            child: MyApp.runWidget())));
+    runApp(MyApp.runWidget());
   }, (error, stack) {
     print('');
   });

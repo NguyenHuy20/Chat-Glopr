@@ -9,9 +9,17 @@ abstract class SettingEvent extends Equatable {
 
 class ShowDialogChangeNameEvent extends SettingEvent {
   final BuildContext context;
-  final String fullName;
+  final ProfileBloc profileBloc;
   const ShowDialogChangeNameEvent(
-      {required this.context, required this.fullName});
+      {required this.context, required this.profileBloc});
+  @override
+  List<Object> get props => [];
+}
+
+class SignOutEvent extends SettingEvent {
+  final ProfileBloc profileBloc;
+  final BuildContext context;
+  const SignOutEvent({required this.context, required this.profileBloc});
   @override
   List<Object> get props => [];
 }

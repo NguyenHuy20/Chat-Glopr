@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../@share/applicationmodel/profile/profile_bloc.dart';
 import '../../../@share/utils/utils.dart';
 import '../../bottom_navigator/bottom_navigator_screen.dart';
-import '../../login/ui/login_page.dart';
 import '../view_model/splash_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,6 +22,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late ProfileBloc profileBloc;
   late SplashBloc splashBloc;
+
   @override
   void initState() {
     splashBloc = BlocProvider.of<SplashBloc>(context)
@@ -36,44 +36,45 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: MultiBlocListener(
-        listeners: [
-          BlocListener<SplashBloc, SplashState>(listener: (context, state) {
-            if (state is GeneralSettingsSuccessState) {
-              //Check logged
-              profileBloc.add(const SplashCheckProfile());
-            }
-            if (state is GeneralSettingsErrorState) {
-              if (Platform.isAndroid) {
-                SystemNavigator.pop();
+          listeners: [
+            BlocListener<SplashBloc, SplashState>(listener: (context, state) {
+              if (state is GeneralSettingsSuccessState) {
+                //Check logged
+                profileBloc.add(SplashCheckProfile());
+              }
+              if (state is GeneralSettingsErrorState) {
+                if (Platform.isAndroid) {
+                  SystemNavigator.pop();
+                  return;
+                }
+                exit(0);
+              }
+            }),
+            BlocListener<ProfileBloc, ProfileState>(
+                listener: (context, state) async {
+              if (state is CheckProfileSuccessState) {
+                if (!mounted) {
+                  return;
+                }
+                goToScreen(context, const BottomNavigatorScreen());
                 return;
               }
-              exit(0);
-            }
-          }),
-          BlocListener<ProfileBloc, ProfileState>(
-              listener: (context, state) async {
-            if (state is CheckProfileSuccessState) {
-              if (!mounted) {
+              if (state is CheckProfileErrorState) {
+                if (!mounted) {
+                  return;
+                }
+                goToScreen(context, const IntroduceScreen());
                 return;
               }
-              goToScreen(context, const BottomNavigatorScreen());
-              return;
-            }
-            if (state is CheckProfileErrorState) {
-              if (!mounted) {
-                return;
-              }
-              goToScreen(context, const IntroduceScreen());
-              return;
-            }
-          }),
-        ],
-        child: Center(
+            }),
+          ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
             child: Image.asset(
-          'assets/images/Splash.webp',
-          scale: 5,
-        )),
-      ),
+              'assets/images/splash_scr.webp',
+              fit: BoxFit.fill,
+            ),
+          )),
     );
   }
 }

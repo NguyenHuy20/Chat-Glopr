@@ -1,19 +1,19 @@
-import 'package:chat_glopr/@share/values/colors.dart';
-import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
-import '../../../../@share/utils/utils.dart';
+import '../../../../../@share/values/colors.dart';
+import '../../../../../@share/values/styles.dart';
+import '../../../../../@share/widgets/text_field_custom.dart';
 
-class WidgetDialogDeleteConservation extends StatelessWidget {
-  const WidgetDialogDeleteConservation({super.key});
+class WidgetDialogJoinChannel extends StatelessWidget {
+  const WidgetDialogJoinChannel({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 260,
+      height: 210,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           image: const DecorationImage(
@@ -23,7 +23,7 @@ class WidgetDialogDeleteConservation extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Delete chat',
+            'Join Channel',
             style: titleStyle.copyWith(fontSize: 20),
           ),
           Padding(
@@ -37,10 +37,7 @@ class WidgetDialogDeleteConservation extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Text(
-            'If you delete this chat you will not see this chat anymore',
-            style: appStyle.copyWith(fontSize: 16),
-          ),
+          textFieldChangeNameCustom(),
           Expanded(
               child: Align(
             alignment: Alignment.bottomRight,

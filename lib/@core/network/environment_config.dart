@@ -6,4 +6,6 @@ class EnvironmentConfig {
       defaultValue: "https://chat-glopr-dev.up.railway.app/api/");
   static const BASE_IMAGE_URL =
       String.fromEnvironment('DART_DEFINES_BASE_IMAGE_URL', defaultValue: "");
+  static const HOST_URL = String.fromEnvironment('DART_DEFINES_HOST_URL',
+      defaultValue: "https://chat-glopr-dev.up.railway.app/");
 }

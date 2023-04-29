@@ -29,64 +29,73 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      padding: const EdgeInsets.only(top: 75),
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/bg_setting.webp'),
-              fit: BoxFit.fill)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: badge.Badge(
-              animationDuration: const Duration(milliseconds: 0),
-              badgeContent: Container(
-                padding: const EdgeInsets.all(17),
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xff29B113)),
-              ),
-              badgeColor: Colors.white,
-              position: BadgePosition.bottomEnd(bottom: 5, end: 18),
-              padding: const EdgeInsets.all(3),
-              toAnimate: true,
-              animationType: BadgeAnimationType.slide,
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                width: 206,
-                height: 206,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.white),
-                child: Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              profileBloc.profileDataModel?.avatar ?? ''))),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: Text(
-              profileBloc.profileDataModel?.fullName ?? '',
-              style: titleStyle.copyWith(color: Colors.white),
-            ),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          WidgetSettingOption(
-            fullName: profileBloc.profileDataModel?.fullName ?? '',
-            settingBloc: settingBloc,
-          )
-        ],
-      ),
-    ));
+    return BlocListener<SettingBloc, SettingState>(
+      listener: (context, state) {
+        if (state is ChangeNameSuccessState) {
+          setState(() {
+            profileBloc.profileDataModel?.fullName = state.name;
+          });
+        }
+      },
+      child: Scaffold(
+          body: Container(
+              padding: const EdgeInsets.only(top: 75),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/bg_setting.webp'),
+                      fit: BoxFit.fill)),
+              child: ListView(
+                padding: const EdgeInsets.all(0),
+                children: [
+                  Center(
+                    child: badge.Badge(
+                      animationDuration: const Duration(milliseconds: 0),
+                      badgeContent: Container(
+                        padding: const EdgeInsets.all(17),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Color(0xff29B113)),
+                      ),
+                      badgeColor: Colors.white,
+                      position: BadgePosition.bottomEnd(bottom: 5, end: 18),
+                      padding: const EdgeInsets.all(3),
+                      toAnimate: true,
+                      animationType: BadgeAnimationType.slide,
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        width: 206,
+                        height: 206,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      profileBloc.profileDataModel?.avatar ??
+                                          ''))),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text(
+                      profileBloc.profileDataModel?.fullName ?? '',
+                      style: titleStyle.copyWith(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  WidgetSettingOption(
+                    profileBloc: profileBloc,
+                    settingBloc: settingBloc,
+                  )
+                ],
+              ))),
+    );
   }
 }

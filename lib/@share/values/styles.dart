@@ -5,27 +5,23 @@ import 'colors.dart';
 TextStyle get appStyle => TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: "Montserrat",
-    fontStyle: FontStyle.normal,
     color: black,
     fontSize: 15);
 
 TextStyle get titlePageStyle => TextStyle(
     fontWeight: FontWeight.w500,
-    fontFamily: "SVN-Poppins",
-    fontStyle: FontStyle.normal,
+    fontFamily: "Montserrat",
     color: black,
     fontSize: 18);
 
 TextStyle get titleStyle => TextStyle(
     fontWeight: FontWeight.w700,
-    fontFamily: "SVN-Poppins",
-    fontStyle: FontStyle.normal,
+    fontFamily: "Montserrat",
     color: black,
     fontSize: 36);
 TextStyle get heading1 => TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: "SVN-Poppins",
-    fontStyle: FontStyle.normal,
     color: black,
     fontSize: 20);
 
