@@ -7,20 +7,22 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../../@share/widgets/text_field_custom.dart';
 
 class WidgetFormField extends StatefulWidget {
-  const WidgetFormField(
-      {super.key,
-      required this.fullNameController,
-      required this.userNameController,
-      required this.identityController,
-      required this.passwordController,
-      required this.genderController,
-      required this.rePasswordController});
+  const WidgetFormField({
+    super.key,
+    required this.fullNameController,
+    required this.userNameController,
+    required this.identityController,
+    required this.passwordController,
+    required this.genderController,
+    required this.rePasswordController,
+  });
   final TextEditingController fullNameController;
   final TextEditingController userNameController;
   final TextEditingController identityController;
   final TextEditingController passwordController;
   final TextEditingController genderController;
   final TextEditingController rePasswordController;
+
   @override
   State<WidgetFormField> createState() => _WidgetFormFieldState();
 }
@@ -38,7 +40,8 @@ class _WidgetFormFieldState extends State<WidgetFormField> {
           labelText: 'Full name', controller: widget.fullNameController),
       textFormFieldCustom(
           labelText: 'Username', controller: widget.userNameController),
-      textFormFieldCustom(labelText: 'Email'),
+      textFormFieldCustom(
+          labelText: 'Email', controller: widget.identityController),
       textFormFieldPasswordCustom(
           obscureText: true,
           labelText: 'Password',
@@ -48,7 +51,8 @@ class _WidgetFormFieldState extends State<WidgetFormField> {
           labelText: 'Re-password',
           controller: widget.rePasswordController),
       phoneFormFieldCustom(
-          labelText: 'Phone', controller: widget.identityController),
+        labelText: 'Phone',
+      ),
       DropdownButtonHideUnderline(
         child: DropdownButton2(
           isExpanded: true,

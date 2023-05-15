@@ -15,3 +15,10 @@ class ChangeNameSuccessState extends SettingState {
   @override
   List<Object> get props => [identityHashCode(this), name];
 }
+
+class ChangeAvatarSuccessState extends SettingState {
+  final String avatar;
+  const ChangeAvatarSuccessState({required this.avatar});
+  @override
+  List<Object> get props => [identityHashCode(this), avatar];
+}

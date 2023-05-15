@@ -29,6 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController rePasswordController = TextEditingController(text: '');
   TextEditingController otpCodeController = TextEditingController(text: '');
   TextEditingController genderController = TextEditingController(text: '');
+
   late RegisterBloc registerBloc;
   @override
   void initState() {
@@ -77,12 +78,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return;
                       }
                       RegisterModel registerModel = RegisterModel(
-                          fullName: fullNameController.text,
-                          userName: userNameController.text,
-                          identity: identityController.text,
-                          password: passwordController.text,
-                          otpCode: '',
-                          gender: genderController.text);
+                        fullName: fullNameController.text,
+                        userName: userNameController.text,
+                        identity: identityController.text,
+                        password: passwordController.text,
+                        otpCode: '',
+                        gender: genderController.text,
+                      );
                       registerBloc.add(
                           SendOTPEvent(model: registerModel, context: context));
                     },

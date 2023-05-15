@@ -44,7 +44,7 @@ class MessageData {
   });
 
   MessageData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     content = json['content'];
     type = json['type'];
 
@@ -62,7 +62,7 @@ class MessageData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['content'] = content;
     data['type'] = type;
 
@@ -89,14 +89,14 @@ class UserMessing {
   UserMessing({this.id, this.fullName, this.avatar});
 
   UserMessing.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     fullName = json['fullName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['fullName'] = fullName;
     data['avatar'] = avatar;
     return data;
@@ -111,14 +111,14 @@ class ManipulatedUsersMessing {
   ManipulatedUsersMessing({this.id, this.fullName, this.avatar});
 
   ManipulatedUsersMessing.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     fullName = json['fullName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['fullName'] = fullName;
     data['avatar'] = avatar;
     return data;

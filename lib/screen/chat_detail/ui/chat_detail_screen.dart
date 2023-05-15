@@ -5,6 +5,8 @@ import 'package:chat_glopr/@core/network_model/result_get_conversation_model.dar
 import 'package:chat_glopr/@core/network_model/result_get_list_message_model.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/screen/chat_detail/view_model/chat_detail_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -18,6 +20,7 @@ import '../../../@share/values/shadow.dart';
 import '../../../@share/values/styles.dart';
 import '../../../@share/widgets/text_field_custom.dart';
 import '../../chat_user_setting/ui/chat_user_setting.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({super.key, required this.data});
@@ -34,13 +37,24 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   TextEditingController chatController = TextEditingController(text: '');
   FocusNode chatFocus = FocusNode();
   late ProfileBloc profileBloc;
-
+  final ScrollController _scrollController = ScrollController();
+  bool emojiShowing = false;
+  bool scrollEnd = true;
   @override
   void initState() {
     super.initState();
     chatDetailBloc = BlocProvider.of<ChatDetailBloc>(context)
       ..add(GetListMessageEvent(converId: widget.data.id ?? ''));
     profileBloc = BlocProvider.of<ProfileBloc>(context);
+    _scrollController.addListener(() {
+      if (_scrollController.offset <=
+              _scrollController.position.minScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        chatDetailBloc
+            .add(PagingListMessageEvent(converId: widget.data.id ?? ''));
+      }
+    });
+
     connectSocket();
   }
 
@@ -81,11 +95,27 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     return BlocListener<ChatDetailBloc, ChatDetailState>(
         listener: (context, state) {
           if (state is GetListMessageSuccessState) {
-            messageController.add(state.data);
+            messageController.add(state.data.reversed.toList());
             return;
           }
           if (state is ReciveMessageState) {
-            messageController.add(state.data);
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is PagingMessageSuccessState) {
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is SendingMessageState) {
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is SendMessageFailState) {
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is SendMessageSuccessState) {
+            messageController.add(state.data.reversed.toList());
             return;
           }
         },
@@ -185,7 +215,18 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     stream: messageController.stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        scrollEnd
+                            ? WidgetsBinding.instance.addPostFrameCallback((_) {
+                                _scrollController.jumpTo(
+                                    _scrollController.position.maxScrollExtent);
+                                setState(() {
+                                  scrollEnd = !scrollEnd;
+                                });
+                              })
+                            : null;
                         return ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            controller: _scrollController,
                             padding: const EdgeInsets.all(0),
                             itemCount: snapshot.data?.length ?? 0,
                             itemBuilder: (context, index) {
@@ -240,9 +281,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                               'assets/icons/photo.webp',
                               width: 50,
                             ),
-                            Image.asset(
-                              'assets/icons/react.webp',
-                              width: 50,
+                            TouchableOpacity(
+                              onTap: () {
+                                setState(() {
+                                  emojiShowing = !emojiShowing;
+                                });
+                              },
+                              child: Image.asset(
+                                'assets/icons/react.webp',
+                                width: 50,
+                              ),
                             ),
                             Image.asset(
                               'assets/icons/mic.webp',
@@ -255,6 +303,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           controller: chatController,
                           onFieldSubmitted: (p0) {
                             chatDetailBloc.add(SendMessageEvent(
+                                fullName:
+                                    profileBloc.profileDataModel?.fullName ??
+                                        '',
+                                avatar:
+                                    profileBloc.profileDataModel?.avatar ?? '',
                                 content: chatController.text,
                                 desId: widget.data.id ?? ''));
                             setState(() {
@@ -297,6 +350,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       ? TouchableOpacity(
                           onTap: () {
                             chatDetailBloc.add(SendMessageEvent(
+                                fullName:
+                                    profileBloc.profileDataModel?.fullName ??
+                                        '',
+                                avatar:
+                                    profileBloc.profileDataModel?.avatar ?? '',
                                 content: chatController.text,
                                 desId: widget.data.id ?? ''));
                             setState(() {
@@ -319,7 +377,48 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       : const SizedBox(),
                 ],
               ),
-            )
+            ),
+            Offstage(
+              offstage: !emojiShowing,
+              child: SizedBox(
+                  height: 250,
+                  child: EmojiPicker(
+                    textEditingController: chatController,
+                    config: Config(
+                      columns: 7,
+                      emojiSizeMax: 32 *
+                          (foundation.defaultTargetPlatform ==
+                                  TargetPlatform.iOS
+                              ? 1.30
+                              : 1.0),
+                      verticalSpacing: 0,
+                      horizontalSpacing: 0,
+                      gridPadding: EdgeInsets.zero,
+                      initCategory: Category.RECENT,
+                      bgColor: const Color(0xFFF2F2F2),
+                      indicatorColor: Colors.blue,
+                      iconColor: Colors.grey,
+                      iconColorSelected: Colors.blue,
+                      backspaceColor: Colors.blue,
+                      skinToneDialogBgColor: Colors.white,
+                      skinToneIndicatorColor: Colors.grey,
+                      enableSkinTones: true,
+                      showRecentsTab: true,
+                      recentsLimit: 28,
+                      replaceEmojiOnLimitExceed: false,
+                      noRecents: const Text(
+                        'No Recents',
+                        style: TextStyle(fontSize: 20, color: Colors.black26),
+                        textAlign: TextAlign.center,
+                      ),
+                      loadingIndicator: const SizedBox.shrink(),
+                      tabIndicatorAnimDuration: kTabScrollDuration,
+                      categoryIcons: const CategoryIcons(),
+                      buttonMode: ButtonMode.MATERIAL,
+                      checkPlatformCompatibility: true,
+                    ),
+                  )),
+            ),
           ]),
         ));
   }
@@ -380,7 +479,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           : "You",
                       style: appStyle.copyWith(fontWeight: FontWeight.w700),
                     ),
-                    Text(data.createdAt ?? '')
+                    Text(
+                      data.createdAt ?? '',
+                      style: TextStyle(
+                          color: data.createdAt == 'Đang gửi'
+                              ? Colors.green
+                              : data.createdAt == 'Lỗi hãy gửi lại'
+                                  ? Colors.red
+                                  : Colors.black),
+                    )
                   ],
                 ),
                 const SizedBox(

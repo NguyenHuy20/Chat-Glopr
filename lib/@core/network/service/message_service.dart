@@ -16,4 +16,8 @@ abstract class MessageServices {
   @GET('messages/{converId}')
   Future<ResultListMessageModel> getListMessage(
       @Path('converId') String converId);
+
+  @GET('messages/{converId}')
+  Future<ResultListMessageModel> pagingListMessage(
+      @Path('converId') String converId, @Query("page") int page);
 }

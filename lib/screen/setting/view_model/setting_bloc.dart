@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:chat_glopr/@core/dependence_injection.dart';
 import 'package:chat_glopr/@core/local_model/update_user_info_model.dart';
+import 'package:chat_glopr/@core/network/repository/notification_repo.dart';
 import 'package:chat_glopr/@core/network/repository/user_repo.dart';
 import 'package:chat_glopr/@core/network_model/result_profile_model.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
@@ -14,6 +17,7 @@ import '../../../@share/base.dart';
 import '../../../@share/utils/utils.dart';
 import '../../../@share/widgets/flushbar_custom.dart';
 import '../../login/ui/login_page.dart';
+import '../ui/image_picker_widget.dart';
 import '../ui/widget_dialog_change_name.dart';
 
 part 'setting_event.dart';
@@ -23,8 +27,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   SettingBloc() : super(SettingInitial()) {
     on<ShowDialogChangeNameEvent>(_showDialogChangeName);
     on<SignOutEvent>(_signOut);
+    on<ShowBottomImagePickerEvent>(_showImagePicker);
+    on<UploadImageEvent>(_uploadImage);
   }
   UserRepo userRepo = inject<UserRepo>();
+  NotificationRepo notificationRepo = inject<NotificationRepo>();
+
   Future<void> _showDialogChangeName(
       ShowDialogChangeNameEvent event, Emitter<SettingState> emit) async {
     TextEditingController nameController = TextEditingController(
@@ -60,7 +68,10 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
             shadowColor: Colors.white,
             content: WidgetDialogSingOut(
               onTap: () async {
+                var udid = await getDeviceUUID();
+
                 showcirle(context, true);
+                await notificationRepo.removeFcmToken(udid);
                 event.profileBloc.profileDataModel = null;
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.clear();
@@ -94,5 +105,49 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
       showFlushBar(context, msg: 'ERROR', status: FLUSHBAR_ERROR);
     }
+  }
+
+  Future<void> _showImagePicker(
+      ShowBottomImagePickerEvent event, Emitter<SettingState> emit) async {
+    showModalBottomSheet(
+        context: event.context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => ImagePickerWidget(
+              profileBloc: event.profileBloc,
+              settingBloc: event.settingBloc,
+            ));
+  }
+
+  Future<void> _uploadImage(
+      UploadImageEvent event, Emitter<SettingState> emit) async {
+    try {
+      showLoading(event.context, true);
+      var result = await userRepo.uploadFile(event.file);
+      if (result.success == true && result.data != null) {
+        var resultChangeAvatar = await userRepo.updateUserInfo(
+            UpdateUserInfoModel(
+                email: event.profileData.email ?? '',
+                fullName: event.profileData.fullName ?? '',
+                phoneNumber: event.profileData.phoneNumber ?? '',
+                gender: event.profileData.gender ?? '',
+                dob: event.profileData.dob ?? '',
+                avatar: result.data?.secureUrl ?? ''));
+        showLoading(event.context, false);
+        if (resultChangeAvatar.success == true) {
+          Navigator.pop(event.context);
+          emit(ChangeAvatarSuccessState(
+              avatar: resultChangeAvatar.data?.avatar ?? ''));
+          showFlushBar(event.context,
+              msg: resultChangeAvatar.message, status: FLUSHBAR_SUCCESS);
+          return;
+        }
+        showFlushBar(event.context,
+            msg: resultChangeAvatar.message, status: FLUSHBAR_ERROR);
+        return;
+      }
+      showLoading(event.context, true);
+      showFlushBar(event.context, msg: result.message, status: FLUSHBAR_ERROR);
+    } catch (ex) {}
   }
 }

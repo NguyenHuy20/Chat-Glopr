@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'message_service.dart';
+part of 'notification_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'message_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _MessageServices implements MessageServices {
-  _MessageServices(
+class _NotificationServices implements NotificationServices {
+  _NotificationServices(
     this._dio, {
     this.baseUrl,
   });
@@ -19,74 +19,48 @@ class _MessageServices implements MessageServices {
   String? baseUrl;
 
   @override
-  Future<ResultSendMessageModel> sendMessage(useDict) async {
+  Future<ResultFcmModel> addFcmToken(userDict) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = useDict;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ResultSendMessageModel>(Options(
+    final _data = userDict;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ResultFcmModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'messages/text',
+              'notification/fcm-token',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ResultSendMessageModel.fromJson(_result.data!);
+    final value = ResultFcmModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ResultListMessageModel> getListMessage(converId) async {
+  Future<ResultFcmModel> removeFcmToken(userDict) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ResultListMessageModel>(Options(
-      method: 'GET',
+    final _data = userDict;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ResultFcmModel>(Options(
+      method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'messages/${converId}',
+              'notification/fcm-token',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ResultListMessageModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<ResultListMessageModel> pagingListMessage(
-    converId,
-    page,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ResultListMessageModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'messages/${converId}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ResultListMessageModel.fromJson(_result.data!);
+    final value = ResultFcmModel.fromJson(_result.data!);
     return value;
   }
 

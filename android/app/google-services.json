@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "252620116938",
+    "project_id": "glopr-chat",
+    "storage_bucket": "glopr-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252620116938:android:c24f5a086086c9031d3533",
+        "android_client_info": {
+          "package_name": "com.example.chat_glopr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252620116938-0sesudod1vtb0jvciitcgkmogu8nklfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHzEWKQPXYYE3JtqWISJkmRDpecdJ-fMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252620116938-0sesudod1vtb0jvciitcgkmogu8nklfk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "252620116938-5c88rndjdumf5ffe4410bp6gk16iju4q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatGlopr"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

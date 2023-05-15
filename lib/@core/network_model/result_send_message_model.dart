@@ -44,7 +44,7 @@ class SendMessageData {
   });
 
   SendMessageData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     content = json['content'];
     type = json['type'];
     conversationId = json['conversationId'];
@@ -57,7 +57,7 @@ class SendMessageData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['content'] = content;
     data['type'] = type;
     data['conversationId'] = conversationId;
@@ -81,14 +81,14 @@ class User {
   User({this.id, this.fullName, this.avatar});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     fullName = json['fullName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['fullName'] = fullName;
     data['avatar'] = avatar;
     return data;

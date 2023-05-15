@@ -32,14 +32,14 @@ class FriendData {
   FriendData({this.id, this.userName, this.avatar});
 
   FriendData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     userName = json['userName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['userName'] = userName;
     data['avatar'] = avatar;
     return data;

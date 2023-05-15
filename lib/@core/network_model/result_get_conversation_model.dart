@@ -55,7 +55,7 @@ class ConversationData {
       this.isJoinFromLink});
 
   ConversationData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     name = json['name'];
     avatar = json['avatar'];
     userId = json['userId'];
@@ -74,7 +74,7 @@ class ConversationData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['name'] = name;
     data['avatar'] = avatar;
     data['userId'] = userId;
@@ -115,7 +115,7 @@ class LastMessage {
   });
 
   LastMessage.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    sId = json['id'];
     content = json['content'];
     type = json['type'];
     conversationId = json['conversationId'];
@@ -132,7 +132,7 @@ class LastMessage {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
+    data['id'] = sId;
     data['content'] = content;
     data['type'] = type;
     data['conversationId'] = conversationId;
@@ -172,13 +172,13 @@ class User {
   User({this.id, this.avatar});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['avatar'] = avatar;
     return data;
   }

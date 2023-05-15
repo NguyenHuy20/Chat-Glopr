@@ -128,32 +128,32 @@ class _ChannelScreenState extends State<ChannelScreen>
     );
   }
 
-  Widget chatGroupBox(ConversationGroupData data) => Slidable(
-        key: const ValueKey(0),
-        enabled: true,
-        closeOnScroll: true,
-        endActionPane: ActionPane(
-          extentRatio: 0.25,
-          motion: const ScrollMotion(),
-          children: [
-            SlidableAction(
-              onPressed: (context) async {
-                chatBloc.add(ShowDialogDeleteConversation(context: context));
-              },
-              icon: Icons.delete,
-              foregroundColor: Colors.red,
-              backgroundColor: const Color(0xFFF8F7FF),
-            )
-          ],
-        ),
-        child: TouchableOpacity(
-          onTap: () {
-            goToScreen(
-                context,
-                ChannelDetailPage(
-                  data: data,
-                ));
-          },
+  Widget chatGroupBox(ConversationGroupData data) => GestureDetector(
+        onTap: () {
+          goToScreen(
+              context,
+              ChannelDetailPage(
+                data: data,
+              ));
+        },
+        child: Slidable(
+          key: const ValueKey(0),
+          enabled: true,
+          closeOnScroll: true,
+          endActionPane: ActionPane(
+            extentRatio: 0.25,
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (context) async {
+                  chatBloc.add(ShowDialogDeleteConversation(context: context));
+                },
+                icon: Icons.delete,
+                foregroundColor: Colors.red,
+                backgroundColor: const Color(0xFFF8F7FF),
+              )
+            ],
+          ),
           child: Container(
             margin: const EdgeInsets.fromLTRB(5, 15, 5, 15),
             width: double.infinity,

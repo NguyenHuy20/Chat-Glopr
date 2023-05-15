@@ -47,7 +47,7 @@ class ConversationGroupData {
       this.isJoinFromLink});
 
   ConversationGroupData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     name = json['name'];
     if (json['image'] != null) {
       image = <ImageAvatar>[];
@@ -67,7 +67,7 @@ class ConversationGroupData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['name'] = name;
     if (image != null) {
       data['image'] = image!.map((v) => v.toJson()).toList();
@@ -123,7 +123,7 @@ class LastMessage {
   });
 
   LastMessage.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     content = json['content'];
     type = json['type'];
     conversationId = json['conversationId'];
@@ -141,7 +141,7 @@ class LastMessage {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['content'] = content;
     data['type'] = type;
     data['conversationId'] = conversationId;
@@ -169,14 +169,14 @@ class User {
   User({this.id, this.fullName, this.avatar});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     fullName = json['fullName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['fullName'] = fullName;
     data['avatar'] = avatar;
     return data;
@@ -191,14 +191,14 @@ class ManipulatedUsers {
   ManipulatedUsers({this.id, this.fullName, this.avatar});
 
   ManipulatedUsers.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     fullName = json['fullName'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['fullName'] = fullName;
     data['avatar'] = avatar;
     return data;

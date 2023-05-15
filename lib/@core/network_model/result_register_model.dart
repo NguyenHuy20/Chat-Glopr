@@ -42,7 +42,7 @@ class RegisterData {
       this.isDelete});
 
   RegisterData.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    sId = json['id'];
     email = json['email'];
     phoneNumber = json['phoneNumber'];
     fullName = json['fullName'];
@@ -54,7 +54,7 @@ class RegisterData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
+    data['id'] = sId;
     data['email'] = email;
     data['phoneNumber'] = phoneNumber;
     data['fullName'] = fullName;

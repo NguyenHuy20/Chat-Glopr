@@ -27,3 +27,53 @@ class ReciveMessageState extends ChannelDetailState {
   @override
   List<Object> get props => [identityHashCode(this), data];
 }
+
+class PagingMessageChannelFailState extends ChannelDetailState {
+  @override
+  List<Object> get props => [];
+}
+
+class LostPagingMessageChannelState extends ChannelDetailState {
+  @override
+  List<Object> get props => [];
+}
+
+class PagingMessageChannelSuccessState extends ChannelDetailState {
+  final List<MessageData> data;
+
+  const PagingMessageChannelSuccessState({required this.data});
+  @override
+  List<Object> get props => [identityHashCode(this), data];
+}
+
+class ShowLoadingMessage extends ChannelDetailState {
+  @override
+  List<Object> get props => [];
+}
+
+class NotShowLoadingMessage extends ChannelDetailState {
+  @override
+  List<Object> get props => [];
+}
+
+class SendingMessageState extends ChannelDetailState {
+  final List<MessageData> data;
+  const SendingMessageState({required this.data});
+  @override
+  List<Object> get props => [];
+}
+
+class SendMessageSuccessState extends ChannelDetailState {
+  final List<MessageData> data;
+
+  const SendMessageSuccessState({required this.data});
+  @override
+  List<Object> get props => [];
+}
+
+class SendMessageFailState extends ChannelDetailState {
+  final List<MessageData> data;
+  const SendMessageFailState({required this.data});
+  @override
+  List<Object> get props => [];
+}

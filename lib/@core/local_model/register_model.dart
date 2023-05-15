@@ -5,14 +5,14 @@ class RegisterModel {
   String password;
   String otpCode;
   String gender;
-
-  RegisterModel(
-      {required this.fullName,
-      required this.userName,
-      required this.identity,
-      required this.password,
-      required this.otpCode,
-      required this.gender});
+  RegisterModel({
+    required this.fullName,
+    required this.userName,
+    required this.identity,
+    required this.password,
+    required this.otpCode,
+    required this.gender,
+  });
 
   Map<String, dynamic> toJson() => {
         'fullName': fullName,
@@ -20,6 +20,6 @@ class RegisterModel {
         'identity': identity,
         'password': password,
         'otpCode': otpCode,
-        'gender': gender
+        'gender': gender,
       };
 }

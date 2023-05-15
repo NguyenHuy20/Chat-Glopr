@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_glopr/screen/introduce/introduce_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -22,13 +23,19 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late ProfileBloc profileBloc;
   late SplashBloc splashBloc;
+  late FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
     splashBloc = BlocProvider.of<SplashBloc>(context)
       ..add(SplashInitialEvent(context: context));
     profileBloc = BlocProvider.of<ProfileBloc>(context);
+    onInit();
     super.initState();
+  }
+
+  onInit() async {
+    await setupFirebaseMessaging();
   }
 
   @override
@@ -76,5 +83,31 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           )),
     );
+  }
+
+  Future<void> setupFirebaseMessaging() async {
+    // requestPermission
+    await firebaseMessaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print('Message data: ${message.data}');
+      if (message.notification != null) {
+        print(message.notification);
+      }
+    });
+
+    await firebaseMessaging.getToken().then((token) async {
+      print('FCM token: ${token ?? ''}');
+    });
+
+    //  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    //   flutterLocalNotificationsPlugin.cancelAll();
+    // });
   }
 }

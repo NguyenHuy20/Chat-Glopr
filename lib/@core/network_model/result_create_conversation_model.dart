@@ -24,19 +24,19 @@ class ResultCreateConversationModel extends BaseModel {
 }
 
 class CreateConversationData {
-  String? sId;
+  String? id;
   bool? isExists;
 
-  CreateConversationData({this.sId, this.isExists});
+  CreateConversationData({this.id, this.isExists});
 
   CreateConversationData.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    id = json['id'];
     isExists = json['isExists'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
+    data['id'] = id;
     data['isExists'] = isExists;
     return data;
   }

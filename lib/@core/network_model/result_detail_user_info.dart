@@ -54,7 +54,7 @@ class DetailUserInfoData {
       this.lastLogin});
 
   DetailUserInfoData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     fullName = json['fullName'];
     userName = json['userName'];
     phoneNumber = json['phoneNumber'];
@@ -71,7 +71,7 @@ class DetailUserInfoData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = id;
+    data['id'] = id;
     data['fullName'] = fullName;
     data['userName'] = userName;
     data['phoneNumber'] = phoneNumber;

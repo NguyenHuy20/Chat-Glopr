@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:chat_glopr/@core/network_model/result_send_otp_model.dart';
+import 'package:chat_glopr/@core/network_model/result_upload_image_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -23,4 +26,8 @@ abstract class UserServices {
 
   @GET('users/detail/{key}')
   Future<ResultDetailUserInfoModel> getDetailUserInfo(@Path('key') String key);
+
+  @POST("upload/avatar")
+  @MultiPart()
+  Future<ResultUploadImageModel> uploadFile(@Part() File file);
 }

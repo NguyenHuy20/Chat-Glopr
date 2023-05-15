@@ -45,7 +45,7 @@ class VerifyOTPBloc extends Bloc<VerifyOTPEvent, VerifyOTPState> {
       var result = await userRepo.requestOTP(event.model);
       if (result.statusCode == 200) {
         showFlushBar(event.context,
-            msg: result.message, status: FLUSHBAR_SUCCESS);
+            msg: 'Đã gửi OTP', status: FLUSHBAR_SUCCESS);
         emit(ResendCodeSuccessState(otp: result.data?.otpCode ?? ''));
         return;
       }

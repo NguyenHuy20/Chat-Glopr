@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
 import '../../@core/network/environment_config.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
@@ -179,6 +182,7 @@ String getImageAvatar(String idimg) {
 }
 
 Future<File> createImageFile(bytes) async {
+  await initializeDateFormatting('vi_VN');
   final directory = await getApplicationDocumentsDirectory();
   DateTime now = DateTime.now();
   String timeStamp = DateFormat('yyyyMMdd_HHmmss').format(now);
@@ -241,4 +245,17 @@ Widget loadMore(
           : const SizedBox()
     ],
   );
+}
+
+Future<String> getUUID() async {
+  String uuid = "";
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS == true) {
+    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+    uuid = iosDeviceInfo.identifierForVendor ?? ''; // unique ID on iOS
+  } else {
+    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+    uuid = androidDeviceInfo.id; // unique ID on Android
+  }
+  return uuid;
 }

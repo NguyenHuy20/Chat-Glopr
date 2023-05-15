@@ -112,7 +112,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       model: RequestOTPModel(
                           context: 'CREATE_USERS',
                           identity: widget.model.identity,
-                          method: 'SMS',
+                          method: 'EMAIL',
                           format: 'NUMBER_ONLY'))),
                   child: Center(
                     child: Text(

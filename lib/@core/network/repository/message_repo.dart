@@ -18,6 +18,16 @@ class MessageRepo {
     }
   }
 
+  Future<ResultListMessageModel> pagingListMessage(
+      String converId, int page) async {
+    try {
+      return await apiClient.messageServices!.pagingListMessage(converId, page);
+    } on DioError catch (e) {
+      final value = ResultListMessageModel.fromJson(e.response!.data);
+      return value;
+    }
+  }
+
   Future<ResultSendMessageModel> sendMessage(SendMessageModel model) async {
     try {
       return await apiClient.messageServices!.sendMessage(model);

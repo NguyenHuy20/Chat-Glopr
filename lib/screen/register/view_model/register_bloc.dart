@@ -24,7 +24,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       var result = await userRepo.requestOTP(RequestOTPModel(
           context: 'CREATE_USERS',
           identity: event.model.identity,
-          method: 'SMS',
+          method: 'EMAIL',
           format: 'NUMBER_ONLY'));
       showLoading(event.context, false);
       if (result.success == true && result.statusCode == 200) {

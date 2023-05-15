@@ -16,7 +16,13 @@ class GetListMessageEvent extends ChatDetailEvent {
 class SendMessageEvent extends ChatDetailEvent {
   final String content;
   final String desId;
-  const SendMessageEvent({required this.content, required this.desId});
+  final String fullName;
+  final String avatar;
+  const SendMessageEvent(
+      {required this.content,
+      required this.desId,
+      required this.avatar,
+      required this.fullName});
   @override
   List<Object> get props => [];
 }
@@ -24,6 +30,13 @@ class SendMessageEvent extends ChatDetailEvent {
 class ReciveMessageEvent extends ChatDetailEvent {
   final dynamic data;
   const ReciveMessageEvent({required this.data});
+  @override
+  List<Object> get props => [];
+}
+
+class PagingListMessageEvent extends ChatDetailEvent {
+  final String converId;
+  const PagingListMessageEvent({required this.converId});
   @override
   List<Object> get props => [];
 }

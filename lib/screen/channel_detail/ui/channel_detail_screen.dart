@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/@share/utils/utils.dart';
@@ -8,6 +6,7 @@ import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:chat_glopr/@share/values/shadow.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/channel_detail/view_model/channel_detail_bloc.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -19,8 +18,7 @@ import '../../../../../@share/widgets/text_field_custom.dart';
 import '../../../@core/network/environment_config.dart';
 import '../../../@core/network_model/result_get_list_message_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
-import '../../../@share/utils/socket_client_util.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 class ChannelDetailScreen extends StatefulWidget {
   const ChannelDetailScreen({super.key, required this.data});
@@ -34,18 +32,47 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
   FocusNode chatFocus = FocusNode();
   late ChannelDetailBloc channelDetailBloc;
   late StreamController<List<MessageData>> messageController;
+  bool emojiShowing = false;
   late ProfileBloc profileBloc;
   TextEditingController chatController = TextEditingController(text: '');
-
+  final ScrollController _scrollController = ScrollController();
+  bool endPage = false;
+  bool scrollEnd = true;
+  final keyboardHeight = WidgetsBinding.instance.window.viewInsets.bottom;
   @override
   void initState() {
     super.initState();
-
     channelDetailBloc = BlocProvider.of<ChannelDetailBloc>(context)
       ..add(GetListMessageEvent(converId: widget.data.id ?? ''));
     profileBloc = BlocProvider.of<ProfileBloc>(context);
-    messageController = StreamController<List<MessageData>>();
+    messageController = StreamController<List<MessageData>>.broadcast();
+    _scrollController.addListener(() {
+      if (_scrollController.offset <=
+              _scrollController.position.minScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        channelDetailBloc
+            .add(PagingListMessageChannelEvent(converId: widget.data.id ?? ''));
+      }
+    });
+
+    chatFocus.addListener(
+      () {
+        if (chatFocus.hasFocus) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            scrollToEndList();
+          });
+
+          return;
+        }
+      },
+    );
     connectSocket();
+  }
+
+  scrollToEndList() {
+    _scrollController.jumpTo(
+      _scrollController.position.maxScrollExtent,
+    );
   }
 
   connectSocket() {
@@ -60,7 +87,7 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
       socket.emit('join-conversation', widget.data.id);
     });
     socket.on('new-message', (data) {
-      channelDetailBloc.add(ReciveMessageEvent(data: data));
+      // channelDetailBloc.add(ReciveMessageEvent(data: data));
     });
   }
 
@@ -82,14 +109,38 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
   @override
   Widget build(BuildContext context) {
     EdgeInsets paddingDevice = MediaQuery.of(context).viewPadding;
+
     return BlocListener<ChannelDetailBloc, ChannelDetailState>(
         listener: (context, state) {
           if (state is GetListMessageSuccessState) {
-            messageController.add(state.data);
+            messageController.add(state.data.reversed.toList());
             return;
           }
           if (state is ReciveMessageState) {
-            messageController.add(state.data);
+            messageController.add(state.data.reversed.toList());
+            setState(() {
+              scrollEnd = true;
+            });
+            return;
+          }
+          if (state is PagingMessageChannelSuccessState) {
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is LostPagingMessageChannelState) {
+            setState(() => endPage = true);
+            return;
+          }
+          if (state is SendingMessageState) {
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is SendMessageFailState) {
+            messageController.add(state.data.reversed.toList());
+            return;
+          }
+          if (state is SendMessageSuccessState) {
+            messageController.add(state.data.reversed.toList());
             return;
           }
         },
@@ -132,9 +183,31 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                 ],
               ),
             ),
+            BlocBuilder<ChannelDetailBloc, ChannelDetailState>(
+                builder: (context, state) {
+              if (state is ShowLoadingMessage) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Đang tải',
+                      style: appStyle,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    cupertinoLoading(color: pink),
+                  ],
+                );
+              }
+              if (state is NotShowLoadingMessage) {
+                return const SizedBox();
+              }
+              return const SizedBox();
+            }),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [Colors.grey.shade200, Colors.white],
@@ -147,7 +220,17 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                     stream: messageController.stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        scrollEnd
+                            ? WidgetsBinding.instance.addPostFrameCallback((_) {
+                                scrollToEndList();
+                                setState(() {
+                                  scrollEnd = !scrollEnd;
+                                });
+                              })
+                            : null;
                         return ListView.builder(
+                            controller: _scrollController,
+                            physics: const ClampingScrollPhysics(),
                             padding: const EdgeInsets.all(0),
                             itemCount: snapshot.data?.length ?? 0,
                             itemBuilder: (context, index) {
@@ -201,7 +284,7 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                             TouchableOpacity(
                               onTap: () => channelDetailBloc.add(
                                   ShowDialogGroupSettingEvent(
-                                      context: context)),
+                                      data: widget.data, context: context)),
                               child: Image.asset(
                                 'assets/icons/more_info_gr.webp',
                                 width: 50,
@@ -215,9 +298,16 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                               'assets/icons/photo.webp',
                               width: 50,
                             ),
-                            Image.asset(
-                              'assets/icons/react.webp',
-                              width: 50,
+                            TouchableOpacity(
+                              onTap: () {
+                                setState(() {
+                                  emojiShowing = !emojiShowing;
+                                });
+                              },
+                              child: Image.asset(
+                                'assets/icons/react.webp',
+                                width: 50,
+                              ),
                             ),
                           ],
                         ),
@@ -226,6 +316,11 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                           controller: chatController,
                           onFieldSubmitted: (p0) {
                             channelDetailBloc.add(SendMessageEvent(
+                                fullName:
+                                    profileBloc.profileDataModel?.fullName ??
+                                        '',
+                                avatar:
+                                    profileBloc.profileDataModel?.avatar ?? '',
                                 content: chatController.text,
                                 desId: widget.data.id ?? ''));
                             setState(() {
@@ -258,16 +353,26 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                                   ? socket.emit('typing', dataNotTyping)
                                   : socket.emit('typing', dataTyping);
                             });
-                            setState(() {
-                              showKeyboard = true;
-                            });
+                            chatController.text != ''
+                                ? setState(() {
+                                    showKeyboard = true;
+                                  })
+                                : setState(() {
+                                    showKeyboard = false;
+                                  });
                           },
                           hintText: 'Aa',
                           focusNode: chatFocus)),
                   showKeyboard
                       ? TouchableOpacity(
                           onTap: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
                             channelDetailBloc.add(SendMessageEvent(
+                                fullName:
+                                    profileBloc.profileDataModel?.fullName ??
+                                        '',
+                                avatar:
+                                    profileBloc.profileDataModel?.avatar ?? '',
                                 content: chatController.text,
                                 desId: widget.data.id ?? ''));
                             setState(() {
@@ -290,7 +395,53 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                       : const SizedBox(),
                 ],
               ),
-            )
+            ),
+            Offstage(
+              offstage: !emojiShowing,
+              child: SizedBox(
+                  height: 250,
+                  child: EmojiPicker(
+                    textEditingController: chatController,
+                    onEmojiSelected: (category, emoji) {
+                      setState(() {
+                        showKeyboard = true;
+                      });
+                    },
+                    config: Config(
+                      columns: 7,
+                      emojiSizeMax: 32 *
+                          (foundation.defaultTargetPlatform ==
+                                  TargetPlatform.iOS
+                              ? 1.30
+                              : 1.0),
+                      verticalSpacing: 0,
+                      horizontalSpacing: 0,
+                      gridPadding: EdgeInsets.zero,
+                      initCategory: Category.RECENT,
+                      bgColor: const Color(0xFFF2F2F2),
+                      indicatorColor: Colors.blue,
+                      iconColor: Colors.grey,
+                      iconColorSelected: Colors.blue,
+                      backspaceColor: Colors.blue,
+                      skinToneDialogBgColor: Colors.white,
+                      skinToneIndicatorColor: Colors.grey,
+                      enableSkinTones: true,
+                      showRecentsTab: true,
+                      recentsLimit: 28,
+                      replaceEmojiOnLimitExceed: false,
+                      noRecents: const Text(
+                        'No Recents',
+                        style: TextStyle(fontSize: 20, color: Colors.black26),
+                        textAlign: TextAlign.center,
+                      ),
+                      loadingIndicator: const SizedBox.shrink(),
+                      tabIndicatorAnimDuration: kTabScrollDuration,
+                      categoryIcons: const CategoryIcons(),
+                      buttonMode: ButtonMode.MATERIAL,
+                      checkPlatformCompatibility: true,
+                    ),
+                  )),
+            ),
           ]),
         ));
   }
@@ -351,7 +502,15 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
                           : "You",
                       style: appStyle.copyWith(fontWeight: FontWeight.w700),
                     ),
-                    Text(data.createdAt ?? '')
+                    Text(
+                      data.createdAt ?? '',
+                      style: TextStyle(
+                          color: data.createdAt == 'Đang gửi'
+                              ? Colors.green
+                              : data.createdAt == 'Lỗi hãy gửi lại'
+                                  ? Colors.red
+                                  : Colors.black),
+                    )
                   ],
                 ),
                 const SizedBox(

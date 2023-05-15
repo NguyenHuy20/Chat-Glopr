@@ -27,3 +27,43 @@ class ReciveMessageState extends ChatDetailState {
   @override
   List<Object> get props => [identityHashCode(this), data];
 }
+
+class PagingMessageFailState extends ChatDetailState {
+  @override
+  List<Object> get props => [];
+}
+
+class LostPagingMessageState extends ChatDetailState {
+  @override
+  List<Object> get props => [];
+}
+
+class PagingMessageSuccessState extends ChatDetailState {
+  final List<MessageData> data;
+
+  const PagingMessageSuccessState({required this.data});
+  @override
+  List<Object> get props => [identityHashCode(this), data];
+}
+
+class SendingMessageState extends ChatDetailState {
+  final List<MessageData> data;
+  const SendingMessageState({required this.data});
+  @override
+  List<Object> get props => [];
+}
+
+class SendMessageFailState extends ChatDetailState {
+  final List<MessageData> data;
+  const SendMessageFailState({required this.data});
+  @override
+  List<Object> get props => [];
+}
+
+class SendMessageSuccessState extends ChatDetailState {
+  final List<MessageData> data;
+
+  const SendMessageSuccessState({required this.data});
+  @override
+  List<Object> get props => [];
+}

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
@@ -6,7 +9,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:badges/src/badge.dart' as badge;
+import 'package:touchable_opacity/touchable_opacity.dart';
 import '../../../@share/applicationmodel/profile/profile_bloc.dart';
+import '../../../@share/utils/utils.dart';
+import '../../../@share/widgets/imagepicker/image_picker_handler.dart';
 import 'widget_setting_option.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -19,6 +25,7 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   late ProfileBloc profileBloc;
   late SettingBloc settingBloc;
+
   @override
   void initState() {
     profileBloc = BlocProvider.of<ProfileBloc>(context);
@@ -36,6 +43,11 @@ class _SettingScreenState extends State<SettingScreen> {
             profileBloc.profileDataModel?.fullName = state.name;
           });
         }
+        if (state is ChangeAvatarSuccessState) {
+          setState(() {
+            profileBloc.profileDataModel?.avatar = state.avatar;
+          });
+        }
       },
       child: Scaffold(
           body: Container(
@@ -48,32 +60,40 @@ class _SettingScreenState extends State<SettingScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: [
-                  Center(
-                    child: badge.Badge(
-                      animationDuration: const Duration(milliseconds: 0),
-                      badgeContent: Container(
-                        padding: const EdgeInsets.all(17),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Color(0xff29B113)),
-                      ),
-                      badgeColor: Colors.white,
-                      position: BadgePosition.bottomEnd(bottom: 5, end: 18),
-                      padding: const EdgeInsets.all(3),
-                      toAnimate: true,
-                      animationType: BadgeAnimationType.slide,
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        width: 206,
-                        height: 206,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
+                  TouchableOpacity(
+                    onTap: () {
+                      settingBloc.add(ShowBottomImagePickerEvent(
+                          profileBloc: profileBloc,
+                          context: context,
+                          settingBloc: settingBloc));
+                    },
+                    child: Center(
+                      child: badge.Badge(
+                        animationDuration: const Duration(milliseconds: 0),
+                        badgeContent: Container(
+                          padding: const EdgeInsets.all(17),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Color(0xff29B113)),
+                        ),
+                        badgeColor: Colors.white,
+                        position: BadgePosition.bottomEnd(bottom: 5, end: 18),
+                        padding: const EdgeInsets.all(3),
+                        toAnimate: true,
+                        animationType: BadgeAnimationType.slide,
                         child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      profileBloc.profileDataModel?.avatar ??
-                                          ''))),
+                          padding: const EdgeInsets.all(5),
+                          width: 206,
+                          height: 206,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        profileBloc.profileDataModel?.avatar ??
+                                            ''))),
+                          ),
                         ),
                       ),
                     ),
