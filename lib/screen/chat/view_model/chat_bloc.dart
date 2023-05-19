@@ -1,3 +1,4 @@
+import 'package:chat_glopr/@core/local_model/create_group_conver_model.dart';
 import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
 import 'package:chat_glopr/@core/network_model/result_get_conversation_group_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,8 +11,10 @@ import '../../../@core/dependence_injection.dart';
 import '../../../@core/network_model/result_get_conversation_model.dart';
 import '../../../@share/base.dart';
 import '../../../@share/utils/utils.dart';
+import '../../../@share/widgets/flushbar_custom.dart';
 import '../../channel_detail/ui/widget_dialog_delete_conversation.dart';
 import '../../channel_detail/ui/widget_dialog_join_channel.dart';
+import '../../chat_detail/ui/chat_detail_page.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -23,10 +26,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   bool endPageGroup = false;
   List<ConversationGroupData> modelGroup = [];
   List<ConversationData> model = [];
-
   ChatBloc() : super(ChatInitial()) {
     on<GetConversationEvent>(_getConversation);
-    on<CreateConversationEvent>(_createConversation);
+    on<CreatePerConversationEvent>(_createPerConversation);
     on<PagingConversationEvent>(_pagingConversation);
     on<PagingConversationGroupEvent>(_pagingConversationGroup);
     on<ShowDialogJoinChannelEvent>(_showDialogJoinChannel);
@@ -42,7 +44,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (result.success == true &&
           result.statusCode == 200 &&
           result.data != null) {
-        emit(GetConversationSuccessState(lstConservation: result.data!));
+        model = result.data!;
+        emit(GetConversationSuccessState(lstConservation: model));
         return;
       }
       emit(GetConversationFailState());
@@ -58,7 +61,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (result.success == true &&
           result.statusCode == 200 &&
           result.data != null) {
-        emit(GetConversationGroupSuccessState(lstConservation: result.data!));
+        modelGroup = result.data!;
+        emit(GetConversationGroupSuccessState(lstConservation: modelGroup));
         return;
       }
       emit(GetConversationGroupFailState());
@@ -102,7 +106,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         pageGroupIndex++;
         var result = await conversationRepo.pagingConversationGroup(
-            event.type, pageIndex);
+            event.type, pageGroupIndex);
         if (result.success == true &&
             result.statusCode == 200 &&
             result.data != null) {
@@ -125,10 +129,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _createConversation(
-      CreateConversationEvent event, Emitter<ChatState> emit) async {
+  Future<void> _createPerConversation(
+      CreatePerConversationEvent event, Emitter<ChatState> emit) async {
     try {
-      var result = await conversationRepo.createConversation(event.userId);
+      var result = await conversationRepo.createPerConversation(event.userId);
       if (result.success == true &&
           result.statusCode == 200 &&
           result.data != null) {
@@ -142,12 +146,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     return showCupertinoDialog(
         context: event.context,
         barrierDismissible: true,
-        builder: (context) => const AlertDialog(
-            contentPadding: EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(
+        builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             shadowColor: Colors.white,
-            content: WidgetDialogDeleteConservation()));
+            content: WidgetDialogDeleteConservation(onTap: () async {
+              try {
+                showLoading(context, true);
+                var result =
+                    await conversationRepo.deleteConversation(event.converId);
+                showLoading(context, false);
+                if (result.success == true) {
+                  Navigator.pop(context);
+
+                  for (var element in model) {
+                    if (element.id == event.converId) {
+                      model.remove(element);
+
+                      return;
+                    }
+                  }
+                }
+
+                showFlushBar(event.context,
+                    msg: result.message ?? '', status: FLUSHBAR_ERROR);
+              } catch (ex) {
+                print(ex);
+              }
+            })));
   }
 
   Future<void> _showDialogJoinChannel(
@@ -155,11 +182,53 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     return showCupertinoDialog(
         context: event.context,
         barrierDismissible: true,
-        builder: (context) => const AlertDialog(
-            contentPadding: EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(
+        builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             shadowColor: Colors.white,
-            content: WidgetDialogJoinChannel()));
+            content: WidgetDialogJoinChannel(
+              onTap: (e) async {
+                if (e == '') {
+                  showFlushBar(event.context,
+                      msg: 'Name Field Empty', status: FLUSHBAR_ERROR);
+                  return;
+                }
+                List<String> lstUserId = [event.userId];
+                try {
+                  showLoading(context, true);
+                  var result = await conversationRepo.createGroupConversation(
+                      CreateGroupConverModel(name: e, userIds: lstUserId));
+                  if (result.success == true) {
+                    var resultGetConver = await conversationRepo
+                        .getOneConversation(result.data?.conversationId ?? '');
+                    showLoading(event.context, false);
+                    Navigator.pop(event.context);
+                    if (resultGetConver.success == true &&
+                        resultGetConver.data != null) {
+                      goToScreen(
+                          event.context,
+                          ChatDetailPage(
+                            name: resultGetConver.data?.name ?? '',
+                            id: resultGetConver.data?.id ?? '',
+                            avatar: resultGetConver.data?.avatar ?? '',
+                            isOnline: resultGetConver.data?.isOnline ?? false,
+                          ));
+                      return;
+                    }
+                    showFlushBar(event.context,
+                        msg: resultGetConver.message ?? '',
+                        status: FLUSHBAR_ERROR);
+                    return;
+                  }
+                  showLoading(context, false);
+                  showFlushBar(event.context,
+                      msg: result.message ?? '', status: FLUSHBAR_ERROR);
+                } catch (ex) {
+                  showFlushBar(event.context,
+                      msg: 'ERROR', status: FLUSHBAR_ERROR);
+                }
+              },
+            )));
   }
 }

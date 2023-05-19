@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
+import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/chat/view_model/chat_bloc.dart';
 import 'package:flutter/material.dart';
@@ -84,19 +85,27 @@ class _ChatScreenState extends State<ChatScreen>
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return snapshot.data!.isNotEmpty
-                            ? loadMore(
-                                _scrollController,
-                                ListView(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, bottom: 10),
-                                    physics: const ClampingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    children: snapshot.data!.map((element) {
-                                      return chatBox(element);
-                                    }).toList()),
-                                endPage)
+                            ? RefreshIndicator(
+                                color: pink,
+                                onRefresh: () async {
+                                  chatBloc
+                                      .add(const GetConversationEvent(type: 1));
+                                  return;
+                                },
+                                child: loadMore(
+                                    _scrollController,
+                                    ListView(
+                                        padding: const EdgeInsets.only(
+                                            top: 15, bottom: 10),
+                                        physics: const ClampingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        children: snapshot.data!.map((element) {
+                                          return chatBox(element);
+                                        }).toList()),
+                                    endPage),
+                              )
                             : const Center(
-                                child: Text('No Data'),
+                                child: Text('Chưa có cuộc trò chuyện'),
                               );
                       }
                       if (snapshot.hasError) {
@@ -119,7 +128,10 @@ class _ChatScreenState extends State<ChatScreen>
           goToScreen(
               context,
               ChatDetailPage(
-                data: data,
+                name: data.name ?? '',
+                id: data.id ?? '',
+                isOnline: data.isOnline ?? false,
+                avatar: data.avatar ?? '',
               ));
         },
         child: Slidable(
@@ -132,7 +144,8 @@ class _ChatScreenState extends State<ChatScreen>
             children: [
               SlidableAction(
                 onPressed: (context) async {
-                  chatBloc.add(ShowDialogDeleteConversation(context: context));
+                  chatBloc.add(ShowDialogDeleteConversation(
+                      context: context, converId: data.id ?? ''));
                 },
                 icon: Icons.delete,
                 foregroundColor: Colors.red,

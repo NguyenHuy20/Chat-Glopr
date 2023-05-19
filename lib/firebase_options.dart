@@ -67,8 +67,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '252620116938',
     projectId: 'glopr-chat',
     storageBucket: 'glopr-chat.appspot.com',
-    iosClientId: '252620116938-5c88rndjdumf5ffe4410bp6gk16iju4q.apps.googleusercontent.com',
-    iosBundleId: 'com.example.chatGlopr',
+    iosClientId:
+        '252620116938-5c88rndjdumf5ffe4410bp6gk16iju4q.apps.googleusercontent.com',
+    iosBundleId: 'com.gloprtech.chatGlopr',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '252620116938',
     projectId: 'glopr-chat',
     storageBucket: 'glopr-chat.appspot.com',
-    iosClientId: '252620116938-5c88rndjdumf5ffe4410bp6gk16iju4q.apps.googleusercontent.com',
-    iosBundleId: 'com.example.chatGlopr',
+    iosClientId:
+        '252620116938-5c88rndjdumf5ffe4410bp6gk16iju4q.apps.googleusercontent.com',
+    iosBundleId: 'com.gloprtech.chatGlopr',
   );
 }

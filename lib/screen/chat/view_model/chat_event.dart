@@ -35,23 +35,27 @@ class PagingConversationGroupEvent extends ChatEvent {
   List<Object> get props => [];
 }
 
-class CreateConversationEvent extends ChatEvent {
+class CreatePerConversationEvent extends ChatEvent {
   final String userId;
-  const CreateConversationEvent({required this.userId});
+  const CreatePerConversationEvent({required this.userId});
   @override
   List<Object> get props => [];
 }
 
 class ShowDialogDeleteConversation extends ChatEvent {
   final BuildContext context;
-  const ShowDialogDeleteConversation({required this.context});
+  final String converId;
+  const ShowDialogDeleteConversation(
+      {required this.context, required this.converId});
   @override
   List<Object> get props => [];
 }
 
 class ShowDialogJoinChannelEvent extends ChatEvent {
   final BuildContext context;
-  const ShowDialogJoinChannelEvent({required this.context});
+  final String userId;
+  const ShowDialogJoinChannelEvent(
+      {required this.context, required this.userId});
   @override
   List<Object> get props => [];
 }

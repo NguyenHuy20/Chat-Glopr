@@ -74,7 +74,7 @@ class _WidgetFormFieldState extends State<WidgetFormField> {
           value: selectedValue,
           onChanged: (value) {
             setState(() {
-              widget.genderController.text = value ?? '';
+              widget.genderController.text = value?.toUpperCase() ?? '';
               selectedValue = value;
             });
           },

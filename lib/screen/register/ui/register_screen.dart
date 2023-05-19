@@ -91,6 +91,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     content: 'Create Account',
                     contentColor: Colors.white),
               ),
+              const SizedBox(
+                height: 10,
+              ),
               TouchableOpacity(
                 onTap: () => goToScreen(context, const LoginPage()),
                 child: Center(

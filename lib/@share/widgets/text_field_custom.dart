@@ -265,7 +265,48 @@ TextFormField textFieldChangeNameCustom(
           //   ),
           // ),
           hintText: hintText,
-          hintStyle: appStyle.copyWith(color: Colors.white)),
+          hintStyle: appStyle.copyWith(color: Colors.grey)),
+    );
+TextFormField textFieldChangePassCustom(
+        {TextEditingController? controller,
+        FocusNode? focusNode,
+        bool fieldRequiredDanger = true,
+        String? hintText,
+        String? initValue,
+        void Function(String)? onFieldSubmitted,
+        void Function(String)? onChanged}) =>
+    TextFormField(
+      obscureText: true,
+      initialValue: initValue,
+      onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      focusNode: focusNode,
+      textDirection: TextDirection.ltr,
+      style: appStyle.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+      controller: controller,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          filled: true, //<-- SEE HERE
+          fillColor: Colors.white,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 5),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 5),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          // border: OutlineInputBorder(
+
+          //   borderRadius: BorderRadius.circular(20.0),
+          //   borderSide: const BorderSide(
+          //     width: 0,
+          //     style: BorderStyle.none,
+          //   ),
+          // ),
+          hintText: hintText,
+          hintStyle: appStyle.copyWith(color: Colors.grey)),
     );
 TextFormField textSearchFieldCustom(
         {TextEditingController? controller,
@@ -280,6 +321,7 @@ TextFormField textSearchFieldCustom(
         void Function(String)? onFieldSubmitted,
         void Function(String)? onChanged}) =>
     TextFormField(
+      onChanged: onChanged,
       controller: controller,
       keyboardType: TextInputType.text,
       validator: validator,

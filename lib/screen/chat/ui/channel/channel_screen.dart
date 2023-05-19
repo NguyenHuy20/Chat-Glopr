@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/@share/values/shadow.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class ChannelScreen extends StatefulWidget {
 class _ChannelScreenState extends State<ChannelScreen>
     with AutomaticKeepAliveClientMixin<ChannelScreen> {
   late ChatBloc chatBloc;
+  late ProfileBloc profileBloc;
   late StreamController<List<ConversationGroupData>> conversationController;
   final ScrollController _scrollController = ScrollController();
   bool endPage = false;
@@ -35,6 +37,7 @@ class _ChannelScreenState extends State<ChannelScreen>
   @override
   void initState() {
     chatBloc = BlocProvider.of<ChatBloc>(context);
+    profileBloc = BlocProvider.of<ProfileBloc>(context);
     chatBloc.add(const GetConversationGroupEvent(type: 2));
     conversationController = StreamController<List<ConversationGroupData>>();
     _scrollController.addListener(() {
@@ -86,8 +89,9 @@ class _ChannelScreenState extends State<ChannelScreen>
                   IconButton(
                     icon: const Icon(Icons.add_outlined),
                     onPressed: () {
-                      chatBloc
-                          .add(ShowDialogJoinChannelEvent(context: context));
+                      chatBloc.add(ShowDialogJoinChannelEvent(
+                          context: context,
+                          userId: profileBloc.profileDataModel?.id ?? ''));
                     },
                   )
                 ],
@@ -98,19 +102,26 @@ class _ChannelScreenState extends State<ChannelScreen>
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return snapshot.data!.isNotEmpty
-                            ? loadMore(
-                                _scrollController,
-                                ListView(
-                                    padding: const EdgeInsets.only(
-                                        top: 5, bottom: 10),
-                                    physics: const ClampingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    children: snapshot.data!.map((element) {
-                                      return chatGroupBox(element);
-                                    }).toList()),
-                                endPage)
+                            ? RefreshIndicator(
+                                onRefresh: () async {
+                                  chatBloc.add(
+                                      const GetConversationGroupEvent(type: 2));
+                                  return;
+                                },
+                                child: loadMore(
+                                    _scrollController,
+                                    ListView(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, bottom: 10),
+                                        physics: const ClampingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        children: snapshot.data!.map((element) {
+                                          return chatGroupBox(element);
+                                        }).toList()),
+                                    endPage),
+                              )
                             : const Center(
-                                child: Text('No Data'),
+                                child: Text('Chưa có cuộc trò chuyện'),
                               );
                       }
                       if (snapshot.hasError) {
@@ -146,7 +157,8 @@ class _ChannelScreenState extends State<ChannelScreen>
             children: [
               SlidableAction(
                 onPressed: (context) async {
-                  chatBloc.add(ShowDialogDeleteConversation(context: context));
+                  chatBloc.add(ShowDialogDeleteConversation(
+                      context: context, converId: data.id ?? ''));
                 },
                 icon: Icons.delete,
                 foregroundColor: Colors.red,

@@ -72,6 +72,7 @@ dependencies:
   device_info_plus: ^8.0.0
   emoji_picker_flutter: ^1.5.4
   expansion_tile_card: ^2.0.0
+  upgrader: ^6.2.0
 
 
   

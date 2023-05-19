@@ -2,7 +2,13 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:blur/blur.dart';
+import 'package:chat_glopr/@core/local_model/add_member_model.dart';
 import 'package:chat_glopr/@core/local_model/send_message_model.dart';
+import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
+import 'package:chat_glopr/@core/network/repository/user_repo.dart';
+import 'package:chat_glopr/@core/network_model/result_member_conversation_model.dart';
+import 'package:chat_glopr/@share/utils/utils.dart';
+import 'package:chat_glopr/screen/channel_detail/ui/widget_add_member_dialog.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +21,9 @@ import '../../../@core/network_model/result_get_list_message_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../@share/utils/socket_client_util.dart';
+import '../../../@share/widgets/flushbar_custom.dart';
+import '../../bottom_navigator/bottom_navigator_screen.dart';
+import '../ui/channel_setting/widget_leave_group_dialog.dart';
 import '../ui/widget_dialog_channel_setting.dart';
 
 part 'channel_detail_event.dart';
@@ -24,15 +33,21 @@ class ChannelDetailBloc extends Bloc<ChannelDetailEvent, ChannelDetailState> {
   List<MessageData> messData = [];
   int pageIndex = 1;
   bool endPage = false;
+  TextEditingController nameController = TextEditingController(text: '');
+
   ChannelDetailBloc() : super(ChannelDetailInitial()) {
     on<GetListMessageEvent>(_getListMessage);
     on<SendMessageEvent>(_sendMessage);
     on<ShowDialogGroupSettingEvent>(_showGroupSetting);
     on<ReciveMessageEvent>(_reciveMessage);
     on<PagingListMessageChannelEvent>(_pagingListMessage);
+    on<ShowDialogAddMemberEvent>(_showDialogAddMember);
+    on<GetMemberConversationEvent>(_getMember);
+    on<LeaveChannelEvent>(_leaveChannel);
   }
   MessageRepo messageRepo = inject<MessageRepo>();
-
+  ConversationRepo conversationRepo = inject<ConversationRepo>();
+  UserRepo userRepo = inject<UserRepo>();
   Future<void> _getListMessage(
       GetListMessageEvent event, Emitter<ChannelDetailState> emit) async {
     try {
@@ -139,7 +154,7 @@ class ChannelDetailBloc extends Bloc<ChannelDetailEvent, ChannelDetailState> {
             contentPadding: const EdgeInsets.all(0),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
-            content: Container(
+            content: const SizedBox(
               height: 700,
               width: 400,
             ).blurred(
@@ -169,5 +184,100 @@ class ChannelDetailBloc extends Bloc<ChannelDetailEvent, ChannelDetailState> {
           replyMessage: [],
         ));
     emit(ReciveMessageState(data: messData));
+  }
+
+  Future<void> _getMember(GetMemberConversationEvent event,
+      Emitter<ChannelDetailState> emit) async {
+    try {
+      var result = await conversationRepo.getMemberConversation(event.converId);
+      if (result.success == true && result.data != null) {
+        emit(GetMemberSuccessState(data: result.data!));
+        return;
+      }
+      emit(GetMemberFailState());
+    } catch (ex) {
+      emit(GetMemberFailState());
+    }
+  }
+
+  Future<void> _showDialogAddMember(
+      ShowDialogAddMemberEvent event, Emitter<ChannelDetailState> emit) async {
+    return showCupertinoDialog(
+        context: event.context,
+        barrierDismissible: true,
+        builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            shadowColor: Colors.white,
+            content: WidgetAddMemberDialog(
+              onTap: (e) async {
+                try {
+                  showLoading(context, true);
+                  var resultSearchUser = await userRepo.getDetailUserInfo(e);
+                  if (resultSearchUser.success == true &&
+                      resultSearchUser.data != null) {
+                    List<String> userId = [resultSearchUser.data!.id ?? ''];
+                    var result = await conversationRepo.addMemberConversation(
+                        AddMemberModel(
+                            converId: event.conversationId, userIds: userId));
+                    showLoading(context, false);
+
+                    if (result.success == true) {
+                      showFlushBar(event.context,
+                          msg: result.message ?? '', status: FLUSHBAR_SUCCESS);
+                      return;
+                    }
+                    showFlushBar(event.context,
+                        msg: result.message ?? '', status: FLUSHBAR_ERROR);
+                    return;
+                  }
+                  showLoading(context, false);
+
+                  showFlushBar(event.context,
+                      msg: resultSearchUser.message ?? '',
+                      status: FLUSHBAR_ERROR);
+                } catch (ex) {
+                  showFlushBar(event.context,
+                      msg: 'Fail', status: FLUSHBAR_ERROR);
+                }
+              },
+            )));
+  }
+
+  Future<void> _leaveChannel(
+      LeaveChannelEvent event, Emitter<ChannelDetailState> emit) async {
+    return showCupertinoDialog(
+        context: event.context,
+        barrierDismissible: true,
+        builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            shadowColor: Colors.white,
+            content: WidgetDialogLeaveGroup(
+              onTap: () async {
+                try {
+                  showLoading(context, true);
+                  var result = await conversationRepo
+                      .leaveConversation(event.conversationId);
+                  showLoading(event.context, false);
+
+                  if (result.success == true) {
+                    goToScreen(context, const BottomNavigatorScreen());
+                    Future.delayed(Duration(milliseconds: 500), () {
+                      showFlushBar(event.context,
+                          msg: result.message ?? '', status: FLUSHBAR_SUCCESS);
+                    });
+                    return;
+                  }
+                  showFlushBar(event.context,
+                      msg: result.message ?? '', status: FLUSHBAR_ERROR);
+                } catch (ex) {
+                  showFlushBar(event.context,
+                      msg: 'Fail', status: FLUSHBAR_ERROR);
+                }
+              },
+            )));
   }
 }

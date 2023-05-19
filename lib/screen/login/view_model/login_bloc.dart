@@ -53,7 +53,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         goToScreen(event.context, const BottomNavigatorScreen());
         return;
       }
-      showFlushBar(event.context, msg: result.message, status: FLUSHBAR_ERROR);
+      showFlushBar(event.context,
+          msg: result.message ?? '', status: FLUSHBAR_ERROR);
     } catch (ex) {
       showLoading(event.context, false);
       showFlushBar(event.context, msg: 'Login Fail', status: FLUSHBAR_ERROR);

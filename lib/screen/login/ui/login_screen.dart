@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(40, 10, 40, 30),
+                padding: const EdgeInsets.fromLTRB(25, 10, 25, 30),
                 child: TouchableOpacity(
                   onTap: () => goToScreen(context, const RegisterPage()),
                   child: RichText(

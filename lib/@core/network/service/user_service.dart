@@ -7,6 +7,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../network_model/result_detail_user_info.dart';
 import '../../network_model/result_profile_model.dart';
+import '../../network_model/result_search_user_model.dart';
 import '../../network_model/result_update_user_info.dart';
 
 part 'user_service.g.dart';
@@ -30,4 +31,7 @@ abstract class UserServices {
   @POST("upload/avatar")
   @MultiPart()
   Future<ResultUploadImageModel> uploadFile(@Part() File file);
+
+  @GET('users')
+  Future<ResultSearchUserpModel> searchUser(@Query('key') String key);
 }

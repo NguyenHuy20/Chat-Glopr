@@ -145,6 +145,7 @@ class _ChannelDetailScreenState extends State<ChannelDetailScreen> {
           }
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Column(children: [
             Padding(
               padding: EdgeInsets.fromLTRB(30, paddingDevice.top + 15, 30, 20),

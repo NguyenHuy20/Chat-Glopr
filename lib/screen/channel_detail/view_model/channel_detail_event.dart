@@ -49,3 +49,41 @@ class PagingListMessageChannelEvent extends ChannelDetailEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetMemberConversationEvent extends ChannelDetailEvent {
+  final String converId;
+  const GetMemberConversationEvent({required this.converId});
+  @override
+  List<Object> get props => [];
+}
+
+class ShowDialogAddMemberEvent extends ChannelDetailEvent {
+  final String conversationId;
+
+  final BuildContext context;
+  const ShowDialogAddMemberEvent({
+    required this.conversationId,
+    required this.context,
+  });
+  @override
+  List<Object> get props => [];
+}
+
+class LeaveChannelEvent extends ChannelDetailEvent {
+  final BuildContext context;
+  final String conversationId;
+  const LeaveChannelEvent(
+      {required this.conversationId, required this.context});
+  @override
+  List<Object> get props => [];
+}
+
+class AddUserEvent extends ChannelDetailEvent {
+  final BuildContext context;
+  final String userName;
+  final String converId;
+  const AddUserEvent(
+      {required this.context, required this.converId, required this.userName});
+  @override
+  List<Object> get props => [];
+}

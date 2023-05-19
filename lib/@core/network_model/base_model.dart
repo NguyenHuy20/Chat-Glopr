@@ -1,14 +1,14 @@
 class BaseModel {
   BaseModel({
     this.success,
-    required this.statusCode,
-    required this.message,
+    this.statusCode,
+    this.message,
     this.dynamicData,
   });
 
   bool? success;
-  int statusCode;
-  String message;
+  dynamic statusCode;
+  String? message;
   dynamic dynamicData;
 
   factory BaseModel.fromJson(Map<String, dynamic> json) => BaseModel(

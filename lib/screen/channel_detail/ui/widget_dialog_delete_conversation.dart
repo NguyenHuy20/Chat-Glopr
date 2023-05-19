@@ -6,8 +6,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class WidgetDialogDeleteConservation extends StatelessWidget {
-  const WidgetDialogDeleteConservation({super.key});
-
+  const WidgetDialogDeleteConservation({super.key, required this.onTap});
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,14 +45,19 @@ class WidgetDialogDeleteConservation extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50), color: green),
-                  child: Text(
-                    'Yes',
-                    style:
-                        titleStyle.copyWith(fontSize: 16, color: Colors.white),
+                TouchableOpacity(
+                  onTap: () {
+                    onTap();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50), color: green),
+                    child: Text(
+                      'Yes',
+                      style: titleStyle.copyWith(
+                          fontSize: 16, color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(

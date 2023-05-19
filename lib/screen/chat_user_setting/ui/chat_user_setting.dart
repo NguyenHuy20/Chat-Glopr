@@ -11,8 +11,14 @@ import '../../../@share/values/styles.dart';
 import 'clipper_bg_user.dart';
 
 class ChatUserSetting extends StatelessWidget {
-  const ChatUserSetting({super.key, required this.data});
-  final ConversationData data;
+  const ChatUserSetting(
+      {super.key,
+      required this.name,
+      required this.avatar,
+      required this.isOnline});
+  final String name;
+  final String avatar;
+  final bool isOnline;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +52,7 @@ class ChatUserSetting extends StatelessWidget {
                 Center(
                   child: badge.Badge(
                     animationDuration: const Duration(milliseconds: 0),
-                    showBadge: data.isOnline ?? false,
+                    showBadge: isOnline,
                     badgeContent: Container(
                       padding: const EdgeInsets.all(17),
                       decoration: const BoxDecoration(
@@ -66,8 +72,8 @@ class ChatUserSetting extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: NetworkImage(data.avatar ?? ''))),
+                            image:
+                                DecorationImage(image: NetworkImage(avatar))),
                       ),
                     ),
                   ),
@@ -77,7 +83,7 @@ class ChatUserSetting extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    data.name ?? '',
+                    name,
                     style: titleStyle.copyWith(color: Colors.white),
                   ),
                 ),

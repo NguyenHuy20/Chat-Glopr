@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:252620116938:android:c24f5a086086c9031d3533",
         "android_client_info": {
-          "package_name": "com.example.chat_glopr"
+          "package_name": "com.gloprtech.chat_glopr"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "252620116938-5c88rndjdumf5ffe4410bp6gk16iju4q.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.chatGlopr"
+                "bundle_id": "com.gloprtech.chatGlopr"
               }
             }
           ]

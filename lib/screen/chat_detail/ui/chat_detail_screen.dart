@@ -23,8 +23,16 @@ import '../../chat_user_setting/ui/chat_user_setting.dart';
 import 'package:flutter/foundation.dart' as foundation;
 
 class ChatDetailScreen extends StatefulWidget {
-  const ChatDetailScreen({super.key, required this.data});
-  final ConversationData data;
+  const ChatDetailScreen(
+      {super.key,
+      required this.name,
+      required this.avatar,
+      required this.id,
+      required this.isOnline});
+  final String name;
+  final String avatar;
+  final String id;
+  final bool isOnline;
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
@@ -44,14 +52,13 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   void initState() {
     super.initState();
     chatDetailBloc = BlocProvider.of<ChatDetailBloc>(context)
-      ..add(GetListMessageEvent(converId: widget.data.id ?? ''));
+      ..add(GetListMessageEvent(converId: widget.id));
     profileBloc = BlocProvider.of<ProfileBloc>(context);
     _scrollController.addListener(() {
       if (_scrollController.offset <=
               _scrollController.position.minScrollExtent &&
           !_scrollController.position.outOfRange) {
-        chatDetailBloc
-            .add(PagingListMessageEvent(converId: widget.data.id ?? ''));
+        chatDetailBloc.add(PagingListMessageEvent(converId: widget.id));
       }
     });
 
@@ -67,7 +74,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             .build());
     socket.connect();
     socket.onConnect((_) {
-      socket.emit('join-conversation', widget.data.id);
+      socket.emit('join-conversation', widget.id);
     });
     socket.on('new-message', (data) {
       chatDetailBloc.add(ReciveMessageEvent(data: data));
@@ -85,7 +92,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             .build());
     socket.connect();
     socket.onConnect((_) {
-      socket.emit('leave-conversation', widget.data.id);
+      socket.emit('leave-conversation', widget.id);
     });
   }
 
@@ -137,7 +144,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(65.0),
                         child: CachedNetworkImage(
-                          imageUrl: widget.data.avatar ?? '',
+                          imageUrl: widget.avatar,
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) =>
                                   const SizedBox(),
@@ -153,7 +160,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.data.name ?? '',
+                          widget.name,
                           style: titleStyle.copyWith(fontSize: 20),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -162,10 +169,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           height: 5,
                         ),
                         Text(
-                          widget.data.isOnline ?? false ? 'Online' : 'Offline',
+                          widget.isOnline ? 'Online' : 'Offline',
                           style: appStyle.copyWith(
-                              color:
-                                  widget.data.isOnline ?? false ? green : gray),
+                              color: widget.isOnline ? green : gray),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -190,7 +196,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     onTap: () => goToScreen(
                         context,
                         ChatUserSetting(
-                          data: widget.data,
+                          name: widget.name,
+                          avatar: widget.avatar,
+                          isOnline: widget.isOnline,
                         )),
                     child: Image.asset(
                       'assets/icons/more.webp',
@@ -309,7 +317,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                 avatar:
                                     profileBloc.profileDataModel?.avatar ?? '',
                                 content: chatController.text,
-                                desId: widget.data.id ?? ''));
+                                desId: widget.id));
                             setState(() {
                               showKeyboard = false;
                               chatController.text = '';
@@ -326,12 +334,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
                             socket.connect();
                             Map<String, dynamic> dataTyping = {
-                              'conversationId': widget.data.id ?? '',
+                              'conversationId': widget.id,
                               'userId': profileBloc.profileDataModel?.id ?? '',
                               'isTyping': true,
                             };
                             Map<String, dynamic> dataNotTyping = {
-                              'conversationId': widget.data.id ?? '',
+                              'conversationId': widget.id,
                               'userId': profileBloc.profileDataModel?.id ?? '',
                               'isTyping': false,
                             };
@@ -356,7 +364,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                 avatar:
                                     profileBloc.profileDataModel?.avatar ?? '',
                                 content: chatController.text,
-                                desId: widget.data.id ?? ''));
+                                desId: widget.id));
                             setState(() {
                               showKeyboard = false;
                               chatController.text = '';

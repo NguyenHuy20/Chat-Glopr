@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:chat_glopr/@core/dependence_injection.dart';
 import 'package:chat_glopr/@core/local_model/update_user_info_model.dart';
+import 'package:chat_glopr/@core/network/repository/auth_repo.dart';
 import 'package:chat_glopr/@core/network/repository/notification_repo.dart';
 import 'package:chat_glopr/@core/network/repository/user_repo.dart';
 import 'package:chat_glopr/@core/network_model/result_profile_model.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
+import 'package:chat_glopr/screen/setting/ui/widget_dialog_change_pass.dart';
 import 'package:chat_glopr/screen/setting/ui/widget_dialog_sign_out.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +31,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<SignOutEvent>(_signOut);
     on<ShowBottomImagePickerEvent>(_showImagePicker);
     on<UploadImageEvent>(_uploadImage);
+    on<ShowDialogChangePassEvent>(_showDialogChangePass);
   }
   UserRepo userRepo = inject<UserRepo>();
   NotificationRepo notificationRepo = inject<NotificationRepo>();
+  AuthRepo authRepo = inject<AuthRepo>();
 
   Future<void> _showDialogChangeName(
       ShowDialogChangeNameEvent event, Emitter<SettingState> emit) async {
@@ -96,10 +100,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       if (result.success == true && result.statusCode == 200) {
         Navigator.pop(context);
         emit(ChangeNameSuccessState(name: result.data?.fullName ?? ''));
-        showFlushBar(context, msg: result.message, status: FLUSHBAR_SUCCESS);
+        showFlushBar(context,
+            msg: result.message ?? '', status: FLUSHBAR_SUCCESS);
         return;
       }
-      showFlushBar(context, msg: result.message, status: FLUSHBAR_ERROR);
+      showFlushBar(context, msg: result.message ?? '', status: FLUSHBAR_ERROR);
     } catch (e) {
       showLoading(context, false);
 
@@ -139,15 +144,51 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
           emit(ChangeAvatarSuccessState(
               avatar: resultChangeAvatar.data?.avatar ?? ''));
           showFlushBar(event.context,
-              msg: resultChangeAvatar.message, status: FLUSHBAR_SUCCESS);
+              msg: resultChangeAvatar.message ?? '', status: FLUSHBAR_SUCCESS);
           return;
         }
         showFlushBar(event.context,
-            msg: resultChangeAvatar.message, status: FLUSHBAR_ERROR);
+            msg: resultChangeAvatar.message ?? '', status: FLUSHBAR_ERROR);
         return;
       }
       showLoading(event.context, true);
-      showFlushBar(event.context, msg: result.message, status: FLUSHBAR_ERROR);
+      showFlushBar(event.context,
+          msg: result.message ?? '', status: FLUSHBAR_ERROR);
     } catch (ex) {}
+  }
+
+  Future<void> _showDialogChangePass(
+      ShowDialogChangePassEvent event, Emitter<SettingState> emit) async {
+    return showCupertinoDialog(
+        context: event.context,
+        barrierDismissible: true,
+        builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            shadowColor: Colors.white,
+            content: WidgetDialogChangePass(
+              onTap: (e) async {
+                try {
+                  showLoading(context, true);
+                  var result = await authRepo.changePass(e);
+                  showLoading(context, false);
+                  if (result.success == true) {
+                    Navigator.pop(context);
+                    Future.delayed(Duration(milliseconds: 500), () {
+                      showFlushBar(event.context,
+                          msg: result.message ?? '', status: FLUSHBAR_SUCCESS);
+                    });
+                    return;
+                  }
+                  showFlushBar(event.context,
+                      msg: result.message ?? '', status: FLUSHBAR_ERROR);
+                } catch (ex) {
+                  showLoading(context, false);
+                  showFlushBar(event.context,
+                      msg: 'ERRoR', status: FLUSHBAR_ERROR);
+                }
+              },
+            )));
   }
 }

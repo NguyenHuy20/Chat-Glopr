@@ -64,7 +64,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileSuccessState(data: profileDataModel!));
       return;
     }
-    emit(ProfileErrorState(msg: result.message));
+    emit(ProfileErrorState(msg: result.message ?? ''));
     return;
   }
 

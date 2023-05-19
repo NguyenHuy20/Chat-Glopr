@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/screen/channel_detail/view_model/channel_detail_bloc.dart';
 import 'package:chat_glopr/screen/chat/view_model/chat_bloc.dart';
+import 'package:chat_glopr/screen/detail_user/view_model/detail_user_bloc.dart';
+import 'package:chat_glopr/screen/friend/friend_request/view_model/friend_request_bloc.dart';
 import 'package:chat_glopr/screen/login/view_model/login_bloc.dart';
 import 'package:chat_glopr/screen/register/view_model/register_bloc.dart';
 import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
@@ -91,6 +93,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ChannelDetailBloc(),
+        ),
+        BlocProvider(
+          create: (context) => DetailUserBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FriendRequestBloc(),
         ),
       ],
       child: const MyApp(),

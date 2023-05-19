@@ -33,7 +33,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         return;
       }
 
-      showFlushBar(event.context, msg: result.message, status: FLUSHBAR_ERROR);
+      showFlushBar(event.context,
+          msg: result.message ?? '', status: FLUSHBAR_ERROR);
     } catch (ex) {
       showFlushBar(event.context,
           msg: 'Some thing wrong! Try again', status: FLUSHBAR_ERROR);

@@ -13,7 +13,7 @@ class GetListMessageSuccessState extends ChannelDetailState {
   final List<MessageData> data;
   const GetListMessageSuccessState({required this.data});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [identityHashCode(this), data];
 }
 
 class GetListMessageFailState extends ChannelDetailState {
@@ -74,6 +74,18 @@ class SendMessageSuccessState extends ChannelDetailState {
 class SendMessageFailState extends ChannelDetailState {
   final List<MessageData> data;
   const SendMessageFailState({required this.data});
+  @override
+  List<Object> get props => [];
+}
+
+class GetMemberSuccessState extends ChannelDetailState {
+  final List<MemberConversationData> data;
+  const GetMemberSuccessState({required this.data});
+  @override
+  List<Object> get props => [identityHashCode(this), data];
+}
+
+class GetMemberFailState extends ChannelDetailState {
   @override
   List<Object> get props => [];
 }

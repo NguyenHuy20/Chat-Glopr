@@ -27,11 +27,12 @@ class VerifyOTPBloc extends Bloc<VerifyOTPEvent, VerifyOTPState> {
       showLoading(event.context, true);
       var result = await authRepo.register(event.model);
       showLoading(event.context, false);
-      if (result.success == true && result.statusCode == 200) {
+      if (result.success == true) {
         goToScreen(event.context, LoginPage());
         return;
       }
-      showFlushBar(event.context, msg: result.message, status: FLUSHBAR_ERROR);
+      showFlushBar(event.context,
+          msg: result.message ?? '', status: FLUSHBAR_ERROR);
     } catch (ex) {
       showLoading(event.context, false);
 
@@ -49,7 +50,8 @@ class VerifyOTPBloc extends Bloc<VerifyOTPEvent, VerifyOTPState> {
         emit(ResendCodeSuccessState(otp: result.data?.otpCode ?? ''));
         return;
       }
-      showFlushBar(event.context, msg: result.message, status: FLUSHBAR_ERROR);
+      showFlushBar(event.context,
+          msg: result.message ?? '', status: FLUSHBAR_ERROR);
     } catch (ex) {}
   }
 }

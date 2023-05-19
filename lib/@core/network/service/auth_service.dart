@@ -1,3 +1,4 @@
+import 'package:chat_glopr/@core/network_model/base_model.dart';
 import 'package:chat_glopr/@core/network_model/result_register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -15,4 +16,7 @@ abstract class AuthServices {
 
   @POST('auth/login')
   Future<ResultLoginModel> login(@Body() userDict);
+
+  @PATCH('auth/me/password')
+  Future<BaseModel> changePass(@Body() useDict);
 }

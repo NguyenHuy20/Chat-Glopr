@@ -45,3 +45,12 @@ class UploadImageEvent extends SettingEvent {
   @override
   List<Object> get props => [];
 }
+
+class ShowDialogChangePassEvent extends SettingEvent {
+  final BuildContext context;
+  const ShowDialogChangePassEvent({
+    required this.context,
+  });
+  @override
+  List<Object> get props => [];
+}

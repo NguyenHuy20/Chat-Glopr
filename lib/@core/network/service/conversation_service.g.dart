@@ -19,7 +19,7 @@ class _ConversationServices implements ConversationServices {
   String? baseUrl;
 
   @override
-  Future<ResultCreateConversationModel> createConversation(
+  Future<ResultCreateConversationModel> createPerConversation(
     userId,
     userDict,
   ) async {
@@ -45,6 +45,29 @@ class _ConversationServices implements ConversationServices {
   }
 
   @override
+  Future<ResultCreateGroupConverModel> createGroupConversation(userDict) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = userDict;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResultCreateGroupConverModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/group',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResultCreateGroupConverModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ResultGetConversationGroupModel> getConversationGroup(type) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'type': type};
@@ -64,6 +87,29 @@ class _ConversationServices implements ConversationServices {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ResultGetConversationGroupModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResultGetOneConverModel> getOneConversation(converId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResultGetOneConverModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/${converId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResultGetOneConverModel.fromJson(_result.data!);
     return value;
   }
 
@@ -145,6 +191,124 @@ class _ConversationServices implements ConversationServices {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ResultGetConversationModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResultMemberConversationModel> getMemberConversation(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResultMemberConversationModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/${id}/members',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResultMemberConversationModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseModel> addMemberConversation(userDict) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = userDict;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/members',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseModel> leaveConversation(converId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/${converId}/members/leave',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseModel> deleteConversation(converId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/${converId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseModel> deleteMemberConver(
+    converId,
+    userId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'conversation/${converId}/members/{userId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseModel.fromJson(_result.data!);
     return value;
   }
 

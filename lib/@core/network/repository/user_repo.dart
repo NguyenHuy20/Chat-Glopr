@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_glopr/@core/network_model/result_detail_user_info.dart';
+import 'package:chat_glopr/@core/network_model/result_search_user_model.dart';
 import 'package:chat_glopr/@core/network_model/result_send_otp_model.dart';
 import 'package:chat_glopr/@core/network_model/result_update_user_info.dart';
 import 'package:chat_glopr/@core/network_model/result_upload_image_model.dart';
@@ -57,6 +58,15 @@ class UserRepo {
       return await apiClient.userServices!.uploadFile(file);
     } on DioError catch (e) {
       final value = ResultUploadImageModel.fromJson(e.response!.data);
+      return value;
+    }
+  }
+
+  Future<ResultSearchUserpModel> searchUser(String key) async {
+    try {
+      return await apiClient.userServices!.searchUser(key);
+    } on DioError catch (e) {
+      final value = ResultSearchUserpModel.fromJson(e.response!.data);
       return value;
     }
   }

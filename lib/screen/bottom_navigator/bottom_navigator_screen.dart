@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -94,37 +96,65 @@ class _BottomNavigatorScreenState extends State<BottomNavigatorScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          onPageChanged: (v) {
-            tabIndex = v;
-          },
-          children: const [
-            TabChatChannelScreen(),
-            CallScreen(),
-            SettingScreen(),
-          ],
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Scaffold(
+          body: PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            onPageChanged: (v) {
+              tabIndex = v;
+            },
+            children: const [
+              TabChatChannelScreen(),
+              CallScreen(),
+              SettingScreen(),
+            ],
+          ),
+          extendBody: true,
+          bottomNavigationBar: CircleNavBar(
+            textActive: const ['Chat', 'History', 'Setting'],
+            onTap: (index) {
+              tabIndex = index;
+              _pageController.jumpToPage(index);
+            },
+            activeIndex: _tabIndex,
+            activeIcons: _activeIcon,
+            inactiveIcons: _inActiveIcon,
+            height: 80,
+            circleWidth: 60,
+            circleColor: pink,
+            color: Colors.white,
+            elevation: 4,
+            shadowColor: Colors.black.withOpacity(0.1),
+            cornerRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          )),
+    );
+  }
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    bool? exitResult = await showDialog(
+      context: context,
+      builder: (context) => _buildExitDialog(context),
+    );
+    return exitResult ?? false;
+  }
+
+  AlertDialog _buildExitDialog(BuildContext context) {
+    return AlertDialog(
+      content: const Text('Bạn có muốn thoát ứng dụng?'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => exit(0),
+          child: const Text('Đồng ý'),
         ),
-        extendBody: true,
-        bottomNavigationBar: CircleNavBar(
-          textActive: const ['Chat', 'History', 'Setting'],
-          onTap: (index) {
-            tabIndex = index;
-            _pageController.jumpToPage(index);
-          },
-          activeIndex: _tabIndex,
-          activeIcons: _activeIcon,
-          inactiveIcons: _inActiveIcon,
-          height: 80,
-          circleWidth: 60,
-          circleColor: pink,
-          color: Colors.white,
-          elevation: 4,
-          shadowColor: Colors.black.withOpacity(0.1),
-          cornerRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        ));
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child:
+              const Text('Đóng', style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ],
+    );
   }
 }

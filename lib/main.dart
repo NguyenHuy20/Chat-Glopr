@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '@core/dependence_injection.dart';
 import '@core/storage/base.dart';
@@ -29,6 +30,7 @@ void main() async {
   runZonedGuarded<Future<void>>(() async {
     initDependence();
     WidgetsFlutterBinding.ensureInitialized();
+    await Upgrader.clearSavedSettings();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
