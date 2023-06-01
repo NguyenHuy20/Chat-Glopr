@@ -2,7 +2,7 @@ import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class WidgetDialogDeleteConservation extends StatelessWidget {

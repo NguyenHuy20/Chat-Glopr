@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../@share/widgets/circle_nav_bar.dart';
 import '../call/call_screen.dart';

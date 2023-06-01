@@ -2,9 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../../@core/dependence_injection.dart';
-import '../../../@share/base.dart';
-
 part 'splash_event.dart';
 part 'splash_state.dart';
 

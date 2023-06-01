@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../@core/network_model/result_list_friend_mode.dart';
@@ -78,7 +77,6 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
                               : const Center(
                                   child: Text('Friend Request Empty'),
                                 );
-                          ;
                         }
                         if (snapshot.hasError) {
                           return Center(

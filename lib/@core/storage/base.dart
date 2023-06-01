@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'dart:ui';
 
 import '../../@share/utils/utils.dart';
@@ -52,7 +53,7 @@ Future<TokenModel?> getToken() async {
 
 Future saveToken(TokenModel tokenModel) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  var jsonText = tokenModel != null ? jsonEncode(tokenModel.toJson()) : "";
+  var jsonText = jsonEncode(tokenModel.toJson());
 
   await pref.setString(SharedStorageConstants.token, jsonText);
 }

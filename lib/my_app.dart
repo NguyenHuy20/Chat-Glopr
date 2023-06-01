@@ -11,16 +11,12 @@ import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
 import 'package:chat_glopr/screen/splash/ui/splash_page.dart';
 import 'package:chat_glopr/screen/splash/view_model/splash_bloc.dart';
 import 'package:chat_glopr/screen/verify_otp/view_model/verify_otp_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '@share/base.dart';
 import '@share/values/colors.dart';
-import 'screen/introduce/introduce_screen.dart';
-import 'screen/splash/ui/splash_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

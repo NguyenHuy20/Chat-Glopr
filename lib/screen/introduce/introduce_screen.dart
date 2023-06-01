@@ -4,7 +4,6 @@ import 'package:chat_glopr/screen/login/ui/login_page.dart';
 import 'package:chat_glopr/screen/register/ui/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../@share/widgets/button_custom.dart';
 

@@ -16,6 +16,7 @@ class RegisterAccountEvent extends VerifyOTPEvent {
   List<Object> get props => [];
 }
 
+// ignore: must_be_immutable
 class ResendOTPEvent extends VerifyOTPEvent {
   final RequestOTPModel model;
   final BuildContext context;

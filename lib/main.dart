@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,9 +17,7 @@ Future<void> _firebaseOnBackgroundHander(RemoteMessage msg) async {
 }
 
 void firebaseCloudMessagingListeners() {
-  FirebaseMessaging.onMessage.listen((event) async {
-    RemoteNotification? notification = event.notification;
-  });
+  FirebaseMessaging.onMessage.listen((event) async {});
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {});
 }

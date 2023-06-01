@@ -9,7 +9,7 @@ import 'package:chat_glopr/screen/channel_detail/view_model/channel_detail_bloc.
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';

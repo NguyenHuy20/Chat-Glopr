@@ -7,7 +7,7 @@ import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/friend/friend_request/view_model/friend_request_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../@share/values/colors.dart';
@@ -86,7 +86,6 @@ class _FriendRequestState extends State<FriendRequest> {
                             : const Center(
                                 child: Text('My Request Empty'),
                               );
-                        ;
                       }
                       if (snapshot.hasError) {
                         return Center(

@@ -1,12 +1,10 @@
 import 'package:badges/badges.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_glopr/screen/chat_user_setting/ui/user_setting_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:badges/src/badge.dart' as badge;
 
-import '../../../@core/network_model/result_get_conversation_model.dart';
 import '../../../@share/values/styles.dart';
 import 'clipper_bg_user.dart';
 

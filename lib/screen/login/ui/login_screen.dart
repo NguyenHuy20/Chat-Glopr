@@ -6,7 +6,7 @@ import 'package:chat_glopr/screen/login/view_model/login_bloc.dart';
 import 'package:chat_glopr/screen/register/ui/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 

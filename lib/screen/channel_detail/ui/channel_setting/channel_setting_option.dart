@@ -2,7 +2,7 @@ import 'package:chat_glopr/screen/channel_detail/view_model/channel_detail_bloc.
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 import '../../../../@core/network_model/result_get_conversation_group_model.dart';

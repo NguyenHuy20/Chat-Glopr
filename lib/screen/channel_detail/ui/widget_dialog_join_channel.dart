@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 import '../../../../../@share/values/colors.dart';

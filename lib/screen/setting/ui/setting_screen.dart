@@ -1,18 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:badges/badges.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:badges/src/badge.dart' as badge;
 import 'package:touchable_opacity/touchable_opacity.dart';
 import '../../../@share/applicationmodel/profile/profile_bloc.dart';
-import '../../../@share/utils/utils.dart';
-import '../../../@share/widgets/imagepicker/image_picker_handler.dart';
 import 'widget_setting_option.dart';
 
 class SettingScreen extends StatefulWidget {

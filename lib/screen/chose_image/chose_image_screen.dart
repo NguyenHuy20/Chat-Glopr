@@ -5,7 +5,6 @@ import 'package:chat_glopr/@share/widgets/button_custom.dart';
 import 'package:chat_glopr/screen/chose_image/complete_choose_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class ChoseImageScreen extends StatelessWidget {
   const ChoseImageScreen({super.key});

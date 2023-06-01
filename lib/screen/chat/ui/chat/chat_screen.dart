@@ -1,19 +1,15 @@
 import 'dart:async';
 
-import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/chat/view_model/chat_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
 
-import '../../../../@core/network_model/result_get_conversation_group_model.dart';
 import '../../../../@core/network_model/result_get_conversation_model.dart';
 import '../../../../@share/utils/utils.dart';
 import '../../../../@share/widgets/widget_skeleton_loading.dart';
@@ -48,6 +44,7 @@ class _ChatScreenState extends State<ChatScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is GetConversationSuccessState) {

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:blur/blur.dart';
@@ -18,9 +17,7 @@ import '../../../@core/dependence_injection.dart';
 import '../../../@core/network/repository/message_repo.dart';
 import '../../../@core/network_model/result_get_conversation_group_model.dart';
 import '../../../@core/network_model/result_get_list_message_model.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-import '../../../@share/utils/socket_client_util.dart';
 import '../../../@share/widgets/flushbar_custom.dart';
 import '../../bottom_navigator/bottom_navigator_screen.dart';
 import '../ui/channel_setting/widget_leave_group_dialog.dart';

@@ -1,7 +1,6 @@
 import 'package:chat_glopr/@core/local_model/create_group_conver_model.dart';
 import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
 import 'package:chat_glopr/@core/network_model/result_get_conversation_group_model.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../@core/dependence_injection.dart';
 import '../../../@core/network_model/result_get_conversation_model.dart';
-import '../../../@share/base.dart';
 import '../../../@share/utils/utils.dart';
 import '../../../@share/widgets/flushbar_custom.dart';
 import '../../channel_detail/ui/widget_dialog_delete_conversation.dart';

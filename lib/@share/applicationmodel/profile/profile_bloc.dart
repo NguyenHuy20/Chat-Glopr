@@ -7,7 +7,6 @@ import '../../../@core/network/repository/user_repo.dart';
 import '../../../@core/network_model/result_profile_model.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../utils/socket_client_util.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 part 'profile_event.dart';
 part 'profile_state.dart';

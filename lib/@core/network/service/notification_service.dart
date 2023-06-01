@@ -1,4 +1,3 @@
-import 'package:chat_glopr/@core/network_model/result_register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 

@@ -1,7 +1,6 @@
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../../@share/values/colors.dart';
 import 'friend_request/ui/friend_request_screen.dart';

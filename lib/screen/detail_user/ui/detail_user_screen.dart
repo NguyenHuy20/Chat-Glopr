@@ -3,7 +3,7 @@ import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/detail_user/view_model/detail_user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 

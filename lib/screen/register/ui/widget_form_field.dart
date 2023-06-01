@@ -2,7 +2,6 @@ import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../../@share/widgets/text_field_custom.dart';
 

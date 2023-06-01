@@ -1,7 +1,6 @@
 import 'package:chat_glopr/@core/dependence_injection.dart';
 import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
 import 'package:chat_glopr/@core/network/repository/friend_repo.dart';
-import 'package:chat_glopr/@core/network_model/result_get_conversation_model.dart';
 import 'package:chat_glopr/@share/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chat_glopr/@core/network_model/result_get_conversation_model.dart';
 import 'package:chat_glopr/@core/network_model/result_get_list_message_model.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/screen/chat_detail/view_model/chat_detail_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;

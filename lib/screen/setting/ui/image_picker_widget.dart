@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
@@ -6,9 +5,7 @@ import 'package:chat_glopr/@share/values/colors.dart';
 import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
-import '../../../@share/utils/utils.dart';
 import '../../../@share/values/styles.dart';
 import '../../../@share/widgets/imagepicker/image_picker_handler.dart';
 

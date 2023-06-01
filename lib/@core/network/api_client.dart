@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:chat_glopr/@core/network/repository/conversation_repo.dart';
 import 'package:chat_glopr/@core/network/service/auth_service.dart';
 import 'package:chat_glopr/@core/network/service/conversation_service.dart';
 import 'package:chat_glopr/@core/network/service/friend_service.dart';
@@ -64,7 +63,7 @@ class ApiClient {
           RequestOptions requestOptions = e.requestOptions;
           String token = '';
           // token = await refreshToken();
-          if (token == null || token == "") {
+          if (token == "") {
             handler.next(e);
             return;
           }
@@ -83,11 +82,7 @@ class ApiClient {
               data: requestOptions.data,
               queryParameters: requestOptions.queryParameters);
           // redirect to login screen
-          if (response != null) {
-            handler.resolve(response);
-          } else {
-            handler.next(e);
-          }
+          handler.resolve(response);
         } catch (ex) {
           print(ex);
         }

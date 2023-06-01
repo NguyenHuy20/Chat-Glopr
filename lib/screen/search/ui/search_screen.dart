@@ -6,7 +6,7 @@ import 'package:chat_glopr/@share/widgets/text_field_custom.dart';
 import 'package:chat_glopr/screen/search/view_model/search_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../@core/network_model/result_search_user_model.dart';

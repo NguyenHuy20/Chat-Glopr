@@ -3,7 +3,6 @@ import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/verify_otp/view_model/verify_otp_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';

@@ -1,6 +1,5 @@
 library circle_nav_bar;
 
-import 'package:chat_glopr/@share/utils/utils.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:flutter/material.dart';
 

@@ -1,11 +1,10 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:chat_glopr/@share/applicationmodel/profile/profile_bloc.dart';
 import 'package:chat_glopr/@share/utils/utils.dart';
 import 'package:chat_glopr/@share/values/styles.dart';
 import 'package:chat_glopr/screen/setting/view_model/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 import '../../friend/tab_friend_sreen.dart';

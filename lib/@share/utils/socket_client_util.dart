@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:chat_glopr/@core/network/environment_config.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketClientUtils {
